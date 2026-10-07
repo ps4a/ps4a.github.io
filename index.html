@@ -8,13 +8,14 @@
         :root {
             --neon-blue: #00f0ff;
             --ps-blue: #0070d1;
-            --neon-glow: rgba(0, 240, 255, 0.35);
+            --neon-glow: rgba(0, 240, 255, 0.4);
             --bg-dark: #05070d;
-            --card-bg: #090f1d;
-            --border-line: rgba(0, 240, 255, 0.3);
-            --text-main: #f8fafc;
+            --card-bg: rgba(10, 15, 29, 0.85);
+            --border-line: rgba(0, 240, 255, 0.25);
+            --text-main: #f1f5f9;
             --text-sub: #94a3b8;
             --warning: #ffb703;
+            --danger: #ff0055;
             --success: #00ff88;
         }
 
@@ -30,10 +31,11 @@
         body {
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(circle at 50% 20%, rgba(0, 112, 209, 0.25) 0%, transparent 60%),
+                radial-gradient(circle at 50% 10%, rgba(0, 112, 209, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 50% 90%, rgba(0, 240, 255, 0.1) 0%, transparent 60%),
                 linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 100% 100%, 35px 35px, 35px 35px;
+            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -50,40 +52,56 @@
             background: var(--card-bg);
             border: 1px solid var(--border-line);
             border-radius: 24px;
-            padding: 30px 22px;
+            padding: 35px 25px;
             position: relative;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 240, 255, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.85),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 25px rgba(0, 240, 255, 0.15);
             text-align: center;
         }
 
-        .hud-corner {
+        .hud-container::before {
+            content: '';
             position: absolute;
-            width: 14px;
-            height: 14px;
-            border: 2px solid var(--neon-blue);
-            pointer-events: none;
+            top: -2px; left: 50px; right: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            box-shadow: 0 0 10px var(--neon-blue);
         }
-        .corner-tl { top: 12px; right: 12px; border-bottom: none; border-left: none; }
-        .corner-tr { top: 12px; left: 12px; border-bottom: none; border-right: none; }
-        .corner-bl { bottom: 12px; right: 12px; border-top: none; border-left: none; }
-        .corner-br { bottom: 12px; left: 12px; border-top: none; border-right: none; }
+
+        header, .site-header {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 0 20px 0 !important;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
         .logo-frame {
             position: relative;
             width: 110px;
             height: 110px;
-            margin: 0 auto 12px;
+            margin: 0 auto 15px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .logo-frame::before {
+        .logo-frame::after {
             content: '';
             position: absolute;
-            inset: -6px;
+            inset: -4px;
             border-radius: 50%;
-            border: 2px dashed rgba(0, 240, 255, 0.4);
+            border: 2px dashed rgba(0, 240, 255, 0.6);
             animation: rotateRing 15s linear infinite;
         }
 
@@ -96,44 +114,50 @@
             height: 100px;
             object-fit: cover;
             border-radius: 50%;
-            background: #000;
+            background: rgba(0, 0, 0, 0.5);
             border: 2px solid var(--neon-blue);
             box-shadow: 0 0 15px var(--neon-glow);
+            z-index: 2;
         }
 
         .main-title {
-            font-size: 2rem;
+            font-size: 1.9rem;
             font-weight: 900;
-            color: #ffffff;
+            letter-spacing: 0.5px;
+            color: #ffffff !important;
             text-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .sub-tagline {
-            font-size: 0.88rem;
-            color: var(--text-sub);
+            font-size: 0.85rem;
+            color: var(--text-sub) !important;
             letter-spacing: 1px;
-            margin-bottom: 14px;
-            font-weight: 700;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .dev-badge-wrapper {
+            margin-bottom: 20px;
         }
 
         .dev-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(0, 112, 209, 0.25);
-            border: 1px solid var(--neon-blue);
+            background: linear-gradient(90deg, rgba(0, 112, 209, 0.3), rgba(0, 240, 255, 0.3)) !important;
+            border: 1px solid var(--neon-blue) !important;
             padding: 8px 22px;
             border-radius: 50px;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
-            margin-bottom: 18px;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
         }
 
         .dev-badge a {
-            color: #ffffff;
+            color: #ffffff !important;
             text-decoration: none;
             font-weight: 800;
-            font-size: 0.92rem;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
             direction: ltr;
         }
 
@@ -149,11 +173,25 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(3, 7, 18, 0.8);
+            background: rgba(3, 7, 18, 0.7);
             border: 1px solid rgba(0, 240, 255, 0.25);
             border-radius: 16px;
             padding: 12px 20px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.05);
+        }
+
+        .visitor-dock::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
         }
 
         .visitor-meta {
@@ -163,65 +201,104 @@
             text-align: right;
         }
 
+        .radar-box {
+            position: relative;
+            width: 38px;
+            height: 38px;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .radar-pulse {
+            width: 10px;
+            height: 10px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-blue);
+            animation: pulseGlow 1.8s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.9); box-shadow: 0 0 5px var(--neon-blue); }
+            50% { transform: scale(1.3); box-shadow: 0 0 15px var(--neon-blue); }
+            100% { transform: scale(0.9); box-shadow: 0 0 5px var(--neon-blue); }
+        }
+
+        .visitor-titles {
+            display: flex;
+            flex-direction: column;
+        }
+
         .visitor-title {
             font-size: 0.95rem;
             font-weight: 800;
             color: #ffffff;
+            letter-spacing: 0.5px;
         }
 
         .visitor-sub {
             font-size: 0.75rem;
             color: var(--text-sub);
+            letter-spacing: 0.5px;
         }
 
         .visitor-stats {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
             direction: ltr;
         }
 
         #visitor-count {
-            font-size: 1.55rem;
+            font-size: 1.5rem;
             font-weight: 900;
-            font-family: 'Consolas', monospace;
+            font-family: 'Consolas', 'Courier New', monospace;
             color: var(--neon-blue);
             text-shadow: 0 0 12px var(--neon-glow);
+            letter-spacing: 2px;
         }
 
         .visitor-unit {
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             color: var(--text-sub);
-            margin-left: 4px;
+            font-weight: 700;
         }
 
         .telemetry-box {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
             background: rgba(3, 7, 18, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 14px 18px;
-            margin-bottom: 18px;
-            text-align: center;
+            padding: 16px;
+            margin-bottom: 20px;
         }
 
         #UA {
             font-size: 0.85rem;
             color: #38bdf8;
-            font-family: 'Consolas', monospace;
+            font-family: 'Courier New', Courier, monospace;
             direction: ltr;
+            letter-spacing: 0.5px;
             word-break: break-all;
-            margin-bottom: 6px;
         }
 
         #det {
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             color: var(--text-sub);
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 10px;
         }
 
         #det b {
             color: var(--neon-blue);
         }
 
-        /* صندوق الرسائل الموثوق والمباشر دون تعقيد */
         .action-dock {
             margin: 15px 0;
         }
@@ -231,120 +308,157 @@
             padding: 22px 15px;
             font-size: 1.25rem;
             font-weight: 800;
-            background: linear-gradient(180deg, #111827 0%, #080c17 100%);
-            border-radius: 16px;
-            border: 1px solid rgba(0, 240, 255, 0.35);
+            background: linear-gradient(180deg, #111827 0%, #0b0f19 100%);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
             color: #ffffff;
             letter-spacing: 0.5px;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.15);
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1.5;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+            display: block;
+        }
+
+        #msgs::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--neon-blue);
+            box-shadow: 0 0 12px var(--neon-blue);
         }
 
         .hud-footer {
-            margin-top: 25px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 30px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             color: #64748b;
         }
 
         .controller-hint {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             color: var(--neon-blue);
             font-weight: bold;
+        }
+
+        .controller-hint span {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 1px solid var(--neon-blue);
+            border-radius: 50%;
+            line-height: 16px;
+            text-align: center;
+            font-size: 0.7rem;
+        }
+
+        @media (max-width: 600px) {
+            .main-title { font-size: 1.4rem; }
+            .hud-container { padding: 25px 15px; }
+            #msgs { font-size: 1rem; padding: 16px 10px; }
+            .hud-footer { flex-direction: column; gap: 10px; }
         }
     </style>
 </head>
 <body>
 
     <div class="hud-container">
-        <div class="hud-corner corner-tl"></div>
-        <div class="hud-corner corner-tr"></div>
-        <div class="hud-corner corner-bl"></div>
-        <div class="hud-corner corner-br"></div>
+        <header class="site-header">
+            <div class="header-content">
+                <div class="logo-frame">
+                    <img src="logo.jpg" alt="شعار المطور" class="header-logo" onerror="this.style.display='none'; document.querySelector('.logo-frame').style.display='none';">
+                </div>
 
-        <header>
-            <div class="logo-frame">
-                <img src="logo.jpg" alt="شعار المطور" class="header-logo" onerror="this.style.display='none'; document.querySelector('.logo-frame').style.display='none';">
-            </div>
+                <h1 class="main-title">المطور علي أسامة</h1>
+                <p class="sub-tagline">دعم التحديثات المتعددة (5.05 - 13.52)</p>
 
-            <h1 class="main-title">المطور علي أسامة</h1>
-            <p class="sub-tagline">دعم التحديثات المتعددة (5.05 - 13.52)</p>
-
-            <div class="dev-badge">
-                <div class="dot"></div>
-                <a href="https://t.me/BBTBB" target="_blank">يوزري : @BBTBB • رقمي : 07749932347</a>
+                <div class="dev-badge-wrapper">
+                    <div class="dev-badge">
+                        <div class="dot"></div>
+                        <a href="https://t.me/BBTBB" target="_blank">USER : @BBTBB • NM : 07749932347</a>
+                    </div>
+                </div>
             </div>
         </header>
 
+        <!-- عداد الزيارات المتطور -->
         <div class="visitor-dock">
             <div class="visitor-meta">
-                <div>
-                    <div class="visitor-title">إجمالي الزيارات</div>
-                    <div class="visitor-sub">عداد الزيارات الإجمالي</div>
+                <div class="radar-box">
+                    <div class="radar-pulse"></div>
+                </div>
+                <div class="visitor-titles">
+                    <span class="visitor-title">إجمالي الزيارات</span>
+                    <span class="visitor-sub">عداد الزيارات الإجمالي</span>
                 </div>
             </div>
             <div class="visitor-stats">
-                <span id="visitor-count">542</span>
+                <span id="visitor-count">50</span>
                 <span class="visitor-unit">زيارة</span>
             </div>
         </div>
 
+        <!-- صندوق معلومات المتصفح والبيئة -->
         <div class="telemetry-box">
-            <div id="UA">جارٍ فحص بيئة النظام وقراءة المعالج...</div>
-            <div id="det">بانتظار قراءة بيانات النظام...</div>
+            <div id="UA">جارٍ فحص بيئة النظام...</div>
+            <div id="det">بانتظار قراءة البيانات...</div>
         </div>
 
+        <!-- صندوق عرض الحالة والرسائل -->
         <div class="action-dock">
-            <div id="msgs">جارٍ تهيئة وحقن نواة النظام... يرجى الانتظار</div>
+            <h1 id="msgs">جارٍ تحميل نواة النظام... يرجى الانتظار</h1>
         </div>
 
         <footer class="hud-footer">
             <div>منظومة المضيف الإصدار v13.52 &middot; &copy; 2026 علي أسامة</div>
-            <div class="controller-hint">اضغط X للتنفيذ</div>
+            <div class="controller-hint">
+                <span>&#10005;</span> اضغط X للتنفيذ
+            </div>
         </footer>
     </div>
 
 <script>
-/* عداد الزيارات الهجين (542) */
+/* نظام عداد الزيارات المتطور */
 (function setupVisitorCounter() {
     var countEl = document.getElementById("visitor-count");
-    var baseVisits = 542;
-    var storageKey = "aliosama_visits_v542";
+    var baseVisits = 50;
+    var storageKey = "aliosama_visits_v50";
     
-    var stored = localStorage.getItem(storageKey);
-    var current = stored ? parseInt(stored, 10) : baseVisits;
-    if (isNaN(current) || current < baseVisits) {
-        current = baseVisits;
-    }
+    var current = parseInt(localStorage.getItem(storageKey) || baseVisits, 10);
     current++;
     localStorage.setItem(storageKey, current);
 
-    if (countEl) countEl.textContent = Number(current).toLocaleString('en-US');
+    function render(num) {
+        if (countEl) countEl.textContent = Number(num).toLocaleString('en-US');
+    }
+    render(current);
 
     if (navigator.onLine) {
         fetch("https://api.counterapi.dev/v1/aliosama_ps4_global/hits/up")
-            .then(function(res) { return res.json(); })
+            .then(function(res) {
+                if (!res.ok) throw new Error("HTTP error " + res.status);
+                return res.json();
+            })
             .then(function(data) {
                 if (data && typeof data.count === "number") {
                     var total = baseVisits + data.count;
                     if (total > current) {
                         localStorage.setItem(storageKey, total);
-                        if (countEl) countEl.textContent = Number(total).toLocaleString('en-US');
+                        render(total);
                     }
                 }
             })
-            .catch(function() {});
+            .catch(function(err) {});
     }
 })();
 
-/* فحص بيئة النظام وتوجيه الكاش وحقن الثغرة */
+/* المنطق البرمجي الكامل لفحص النظام والتوجيه والتحميل */
 (function initSystemHost() {
     var uaFull = navigator.userAgent;
     var match = uaFull.match(/PlayStation 4[ /]([\d.]+)/i);
@@ -358,21 +472,19 @@
 
     if (uaBox) uaBox.textContent = uaFull;
     if (detBox) {
-        detBox.innerHTML = "إصدار النظام: <b>" + fwVersion + "</b> &middot; الجهاز: <b>" + (isPS4 ? "بلايستيشن 4" : "كمبيوتر / جهاز خارجي") + "</b>";
+        detBox.innerHTML = "إصدار النظام: <b>" + fwVersion + "</b> &middot; الجهاز: <b>" + (isPS4 ? "بلايستيشن 4" : "كمبيوتر / جهاز آخر") + "</b>";
     }
 
     function onScriptError() {
-        if (msgs) {
-            msgs.style.borderColor = "#ff0055";
-            msgs.innerHTML = "لم يتم العثور على الملفات! - امسح بيانات المتصفح وأعد تثبيت الكاش";
-        }
+        if (msgs) msgs.innerHTML = "لم يتم العثور على الملفات! - امسح بيانات المتصفح وأعد تثبيت الكاش...";
     }
 
     if (!isPS4) {
-        if (msgs) msgs.innerHTML = "الهوست يدعم أجهزة بلايستيشن 4 من تحديث 5.05 إلى 13.52.";
+        if (msgs) msgs.innerHTML = "يعمل من نظام 7.00 الى 13.52";
         return;
     }
 
+    // التحقق من حالة الكاش: 0 تعني أول تشغيل وتوجيه مباشر لصفحة الكاش المناسبة
     if (window.applicationCache && window.applicationCache.status == 0) {
         if (fwNum == 5.05 || fwNum == 5.07) {
             window.location.replace("cache505.html");
@@ -385,9 +497,10 @@
         } else if (fwNum >= 11.50 && fwNum <= 13.52) {
             window.location.replace("cacheslopkit.html");
         } else {
-            if (msgs) msgs.innerHTML = 'إصدار غير مدعوم: ' + fwVersion;
+            if (msgs) msgs.innerHTML = 'إصدار غير مدعوم: <span style="color: red;">' + fwVersion + '</span>';
         }
     } else {
+        // حقن السكربت المخصص للنظام عند التشغيل أوفلاين
         function loadPayload(path, isModule, callback) {
             var script = document.createElement('script');
             if (isModule) script.type = 'module';
@@ -398,25 +511,25 @@
         }
 
         if (fwNum == 5.05 || fwNum == 5.07) {
-            loadPayload("505/exploit.js", false);
+            loadPayload("505/" + "exploit.js", false);
         } else if (fwNum >= 7.00 && fwNum <= 8.52) {
-            loadPayload("700/alert.js", true);
+            loadPayload("700/" + "alert.js", true);
         } else if (fwNum >= 9.00 && fwNum <= 9.60) {
-            loadPayload("900/alert.js", true);
+            loadPayload("900/" + "alert.js", true);
         } else if (fwNum >= 10.00 && fwNum <= 11.02) {
-            loadPayload("css/main.js", false, function() {
+            loadPayload("css/" + "main.js", false, function() {
                 setTimeout(function() {
                     if (typeof doJb === "function") doJb();
                 }, 500);
             });
         } else if (fwNum >= 11.50 && fwNum <= 12.02) {
-            loadPayload("slopkit/chain_lapse.js", true);
+            loadPayload("slopkit/" + "chain_lapse.js", true);
         } else if (fwNum >= 12.50 && fwNum <= 13.00) {
-            loadPayload("slopkit/chain_poops.js", true);
+            loadPayload("slopkit/" + "chain_poops.js", true);
         } else if (fwNum >= 13.02 && fwNum <= 13.52) {
-            loadPayload("slopkit/jb.js", true);
+            loadPayload("slopkit/" + "jb.js", true);
         } else {
-            if (msgs) msgs.innerHTML = 'إصدار غير مدعوم: ' + fwVersion;
+            if (msgs) msgs.innerHTML = 'إصدار غير مدعوم: <span style="color: red;">' + fwVersion + '</span>';
         }
     }
 })();
