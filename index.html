@@ -48,7 +48,6 @@
             position: relative;
         }
 
-        /* خط مسح ضوئي متحرك في الخلفية */
         body::after {
             content: "";
             position: absolute;
@@ -78,7 +77,6 @@
             overflow: hidden;
         }
 
-        /* زوايا تكنولوجية مضيئة */
         .hud-corner {
             position: absolute;
             width: 16px;
@@ -112,7 +110,6 @@
             align-items: center;
         }
 
-        /* إطار الشعار الحركي الدوار مع نبض مزدوج */
         .logo-frame {
             position: relative;
             width: 120px;
@@ -221,7 +218,6 @@
             animation: pulseGlow 1.5s infinite;
         }
 
-        /* منصة الزيارات التفاعلية */
         .visitor-dock {
             display: flex;
             align-items: center;
@@ -318,7 +314,6 @@
             font-weight: 700;
         }
 
-        /* صندوق فحص النظام والبيئة */
         .telemetry-box {
             display: grid;
             grid-template-columns: 1fr;
@@ -351,7 +346,6 @@
             font-weight: 800;
         }
 
-        /* محطة عرض الحالات الذكية */
         .action-dock {
             margin: 20px 0;
             position: relative;
@@ -569,7 +563,6 @@
 <body>
 
     <div class="hud-container">
-        <!-- زوايا تكنولوجية استعراضية -->
         <div class="hud-corner corner-tl"></div>
         <div class="hud-corner corner-tr"></div>
         <div class="hud-corner corner-bl"></div>
@@ -593,7 +586,6 @@
             </div>
         </header>
 
-        <!-- عداد الزيارات المتطور (يبدأ من 542) -->
         <div class="visitor-dock">
             <div class="visitor-meta">
                 <div class="radar-box">
@@ -610,13 +602,11 @@
             </div>
         </div>
 
-        <!-- صندوق التيليميتري ومعلومات النظام -->
         <div class="telemetry-box">
             <div id="UA">جارٍ فحص بيئة النظام وقراءة المعالج...</div>
             <div id="det">بانتظار قراءة بيانات النظام...</div>
         </div>
 
-        <!-- محطة الحالة التفاعلية الذكية -->
         <div class="action-dock">
             <div id="status-card" class="status-card state-loading">
                 <div id="status-icon" class="status-icon-wrapper">
@@ -637,7 +627,7 @@
     </div>
 
 <script>
-/* واجهة التحكم الذكية بالحالات (UI State Manager) */
+/* واجهة التحكم بالحالات (UI State Manager) */
 var HostUI = {
     card: document.getElementById("status-card"),
     icon: document.getElementById("icon-symbol"),
@@ -685,7 +675,48 @@ var HostUI = {
     }
 };
 
-/* صائد تنبيهات المتصفح لتحويل رسائل البايلود إلى كروت تفاعلية */
+/* صائد ومترجم رسائل الثغرة التلقائي (Auto English-to-Arabic Translator) */
+(function autoTranslateExploit() {
+    var msgsTarget = document.getElementById("msgs");
+    if (!msgsTarget) return;
+
+    var isTranslating = false;
+
+    var observer = new MutationObserver(function() {
+        if (isTranslating) return;
+
+        var rawText = msgsTarget.textContent || msgsTarget.innerText || "";
+        var txt = rawText.toLowerCase();
+
+        // تجنب الدخول في حلقة تكرار إذا كان النص عربياً بالفعل
+        if (/[\u0600-\u06FF]/.test(rawText) && txt.indexOf("failed") === -1 && txt.indexOf("restart") === -1) {
+            return;
+        }
+
+        // 1. ترجمة حالات الفشل وإعادة التشغيل (Failed to load / Restart console)
+        if (txt.indexOf("failed to load") !== -1 || txt.indexOf("restart your console") !== -1 || txt.indexOf("reboot") !== -1 || txt.indexOf("panic") !== -1) {
+            isTranslating = true;
+            HostUI.showReboot("فشل التحميل! يرجى إعادة تشغيل جهاز البلايستيشن");
+            setTimeout(function() { isTranslating = false; }, 400);
+        }
+        // 2. ترجمة حالات النجاح وتفعيل الألعاب (GoldHEN / Success / Done / Loaded)
+        else if (txt.indexOf("goldhen") !== -1 || txt.indexOf("jailbreak") !== -1 || txt.indexOf("success") !== -1 || txt.indexOf("loaded") !== -1 || txt.indexOf("done") !== -1) {
+            isTranslating = true;
+            HostUI.showSuccess("تم تفعيل الألعاب بنجاح تام!");
+            setTimeout(function() { isTranslating = false; }, 400);
+        }
+        // 3. ترجمة حالات نفاد الذاكرة والخروج من المتصفح (Out of memory / Reopen / Close browser)
+        else if (txt.indexOf("out of memory") !== -1 || txt.indexOf("reopen") !== -1 || txt.indexOf("re-open") !== -1 || txt.indexOf("close browser") !== -1 || txt.indexOf("exit") !== -1) {
+            isTranslating = true;
+            HostUI.showReopen("ملاحظة: اخرج من المتصفح وأعد الدخول");
+            setTimeout(function() { isTranslating = false; }, 400);
+        }
+    });
+
+    observer.observe(msgsTarget, { childList: true, characterData: true, subtree: true });
+})();
+
+/* صائد نوافذ التنبيه التقليدية (Alert Interceptor) */
 (function hookAlerts() {
     var rawAlert = window.alert;
     window.alert = function(msg) {
@@ -711,7 +742,7 @@ var HostUI = {
     };
 })();
 
-/* نظام عداد الزيارات الهجين - تم ضبط القيمة الأساسية على 542 */
+/* عداد الزيارات الهجين (يبدأ من 542) */
 (function setupVisitorCounter() {
     var countEl = document.getElementById("visitor-count");
     var baseVisits = 542;
@@ -749,7 +780,7 @@ var HostUI = {
     }
 })();
 
-/* فحص بنية الجهاز وتوجيه الكاش وحقن الثغرة */
+/* فحص بنية الجهاز وتوجيه الكاش وحقن الثغرات */
 (function initSystemHost() {
     var uaFull = navigator.userAgent;
     var match = uaFull.match(/PlayStation 4[ /]([\d.]+)/i);
