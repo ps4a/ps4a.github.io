@@ -8,15 +8,16 @@
         :root {
             --neon-blue: #00f0ff;
             --ps-blue: #0070d1;
-            --neon-glow: rgba(0, 240, 255, 0.4);
-            --bg-dark: #05070d;
-            --card-bg: rgba(10, 15, 29, 0.85);
-            --border-line: rgba(0, 240, 255, 0.25);
-            --text-main: #f1f5f9;
+            --neon-glow: rgba(0, 240, 255, 0.45);
+            --bg-dark: #04060c;
+            --card-bg: rgba(8, 14, 28, 0.88);
+            --border-line: rgba(0, 240, 255, 0.28);
+            --text-main: #f8fafc;
             --text-sub: #94a3b8;
             --warning: #ffb703;
             --danger: #ff0055;
             --success: #00ff88;
+            --reopen: #38bdf8;
         }
 
         * {
@@ -31,11 +32,11 @@
         body {
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(circle at 50% 10%, rgba(0, 112, 209, 0.25) 0%, transparent 50%),
-                radial-gradient(circle at 50% 90%, rgba(0, 240, 255, 0.1) 0%, transparent 60%),
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+                radial-gradient(circle at 50% 15%, rgba(0, 112, 209, 0.35) 0%, transparent 60%),
+                radial-gradient(circle at 50% 85%, rgba(0, 240, 255, 0.15) 0%, transparent 70%),
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 35px 35px, 35px 35px;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -44,39 +45,64 @@
             padding: 20px 15px;
             direction: rtl;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* خط مسح ضوئي متحرك في الخلفية */
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 240, 255, 0.02) 51%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 1;
         }
 
         .hud-container {
             width: 100%;
-            max-width: 760px;
+            max-width: 780px;
             background: var(--card-bg);
             border: 1px solid var(--border-line);
-            border-radius: 24px;
+            border-radius: 28px;
             padding: 35px 25px;
             position: relative;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             box-shadow: 
-                0 20px 50px rgba(0, 0, 0, 0.85),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                0 0 25px rgba(0, 240, 255, 0.15);
+                0 25px 60px rgba(0, 0, 0, 0.9),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                0 0 35px rgba(0, 240, 255, 0.18);
             text-align: center;
+            z-index: 2;
+            overflow: hidden;
         }
+
+        /* زوايا تكنولوجية مضيئة */
+        .hud-corner {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--neon-blue);
+            pointer-events: none;
+        }
+        .corner-tl { top: 12px; right: 12px; border-bottom: none; border-left: none; }
+        .corner-tr { top: 12px; left: 12px; border-bottom: none; border-right: none; }
+        .corner-bl { bottom: 12px; right: 12px; border-top: none; border-left: none; }
+        .corner-br { bottom: 12px; left: 12px; border-top: none; border-right: none; }
 
         .hud-container::before {
             content: '';
             position: absolute;
-            top: -2px; left: 50px; right: 50px;
-            height: 2px;
+            top: -2px; left: 40px; right: 40px;
+            height: 3px;
             background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
-            box-shadow: 0 0 10px var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
         }
 
         header, .site-header {
             background: transparent !important;
             border: none !important;
-            box-shadow: none !important;
-            padding: 0 !important;
             margin: 0 0 20px 0 !important;
         }
 
@@ -86,70 +112,95 @@
             align-items: center;
         }
 
+        /* إطار الشعار الحركي الدوار مع نبض مزدوج */
         .logo-frame {
             position: relative;
-            width: 110px;
-            height: 110px;
+            width: 120px;
+            height: 120px;
             margin: 0 auto 15px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
+        .logo-frame::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px dashed rgba(0, 240, 255, 0.5);
+            animation: rotateRing 12s linear infinite;
+        }
+
         .logo-frame::after {
             content: '';
             position: absolute;
-            inset: -4px;
+            inset: -14px;
             border-radius: 50%;
-            border: 2px dashed rgba(0, 240, 255, 0.6);
-            animation: rotateRing 15s linear infinite;
+            border: 1px dotted rgba(0, 112, 209, 0.6);
+            animation: rotateRingRev 18s linear infinite;
         }
 
         @keyframes rotateRing {
             100% { transform: rotate(360deg); }
         }
+        @keyframes rotateRingRev {
+            100% { transform: rotate(-360deg); }
+        }
 
         .header-logo {
-            width: 100px;
-            height: 100px;
+            width: 105px;
+            height: 105px;
             object-fit: cover;
             border-radius: 50%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 15px var(--neon-glow);
+            box-shadow: 0 0 20px var(--neon-glow);
             z-index: 2;
+            transition: transform 0.4s ease;
+        }
+
+        .header-logo:hover {
+            transform: scale(1.05);
         }
 
         .main-title {
-            font-size: 1.9rem;
+            font-size: 2.1rem;
             font-weight: 900;
             letter-spacing: 0.5px;
             color: #ffffff !important;
-            text-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
-            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(0, 240, 255, 0.7);
+            margin-bottom: 6px;
         }
 
         .sub-tagline {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-sub) !important;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            font-weight: 600;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+            font-weight: 700;
         }
 
         .dev-badge-wrapper {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         .dev-badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: linear-gradient(90deg, rgba(0, 112, 209, 0.3), rgba(0, 240, 255, 0.3)) !important;
+            gap: 10px;
+            background: linear-gradient(90deg, rgba(0, 112, 209, 0.35), rgba(0, 240, 255, 0.35)) !important;
             border: 1px solid var(--neon-blue) !important;
-            padding: 8px 22px;
+            padding: 9px 24px;
             border-radius: 50px;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .dev-badge:hover {
+            box-shadow: 0 0 28px rgba(0, 240, 255, 0.55);
+            transform: translateY(-2px);
         }
 
         .dev-badge a {
@@ -162,70 +213,70 @@
         }
 
         .dev-badge .dot {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             background: var(--neon-blue);
             border-radius: 50%;
-            box-shadow: 0 0 8px var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+            animation: pulseGlow 1.5s infinite;
         }
 
+        /* منصة الزيارات التفاعلية */
         .visitor-dock {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(3, 7, 18, 0.7);
-            border: 1px solid rgba(0, 240, 255, 0.25);
-            border-radius: 16px;
-            padding: 12px 20px;
+            background: rgba(3, 7, 18, 0.75);
+            border: 1px solid rgba(0, 240, 255, 0.28);
+            border-radius: 18px;
+            padding: 14px 22px;
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.05);
+            box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.08);
         }
 
         .visitor-dock::before {
             content: '';
             position: absolute;
-            top: 0;
-            right: 0;
-            width: 4px;
-            height: 100%;
+            top: 0; right: 0;
+            width: 5px; height: 100%;
             background: var(--neon-blue);
-            box-shadow: 0 0 10px var(--neon-blue);
+            box-shadow: 0 0 12px var(--neon-blue);
         }
 
         .visitor-meta {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             text-align: right;
         }
 
         .radar-box {
             position: relative;
-            width: 38px;
-            height: 38px;
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            border-radius: 10px;
+            width: 42px;
+            height: 42px;
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .radar-pulse {
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             background: var(--neon-blue);
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--neon-blue);
-            animation: pulseGlow 1.8s infinite;
+            box-shadow: 0 0 12px var(--neon-blue);
+            animation: pulseGlow 1.6s infinite;
         }
 
         @keyframes pulseGlow {
-            0% { transform: scale(0.9); box-shadow: 0 0 5px var(--neon-blue); }
-            50% { transform: scale(1.3); box-shadow: 0 0 15px var(--neon-blue); }
-            100% { transform: scale(0.9); box-shadow: 0 0 5px var(--neon-blue); }
+            0% { transform: scale(0.85); box-shadow: 0 0 6px var(--neon-blue); }
+            50% { transform: scale(1.35); box-shadow: 0 0 18px var(--neon-blue); }
+            100% { transform: scale(0.85); box-shadow: 0 0 6px var(--neon-blue); }
         }
 
         .visitor-titles {
@@ -234,108 +285,255 @@
         }
 
         .visitor-title {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 800;
             color: #ffffff;
             letter-spacing: 0.5px;
         }
 
         .visitor-sub {
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             color: var(--text-sub);
-            letter-spacing: 0.5px;
         }
 
         .visitor-stats {
             display: flex;
             align-items: baseline;
-            gap: 6px;
+            gap: 8px;
             direction: ltr;
         }
 
         #visitor-count {
-            font-size: 1.5rem;
+            font-size: 1.65rem;
             font-weight: 900;
-            font-family: 'Consolas', 'Courier New', monospace;
+            font-family: 'Consolas', monospace;
             color: var(--neon-blue);
-            text-shadow: 0 0 12px var(--neon-glow);
+            text-shadow: 0 0 14px var(--neon-glow);
             letter-spacing: 2px;
         }
 
         .visitor-unit {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--text-sub);
             font-weight: 700;
         }
 
+        /* صندوق فحص النظام والبيئة */
         .telemetry-box {
             display: grid;
             grid-template-columns: 1fr;
             gap: 12px;
             background: rgba(3, 7, 18, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
-            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 16px 20px;
             margin-bottom: 20px;
         }
 
         #UA {
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             color: #38bdf8;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Consolas', 'Courier New', monospace;
             direction: ltr;
             letter-spacing: 0.5px;
             word-break: break-all;
         }
 
         #det {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-sub);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             padding-top: 10px;
         }
 
         #det b {
             color: var(--neon-blue);
-        }
-
-        .action-dock {
-            margin: 15px 0;
-        }
-
-        #msgs {
-            width: 100%;
-            padding: 22px 15px;
-            font-size: 1.25rem;
             font-weight: 800;
-            background: linear-gradient(180deg, #111827 0%, #0b0f19 100%);
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #ffffff;
-            letter-spacing: 0.5px;
+        }
+
+        /* محطة عرض الحالات الذكية */
+        .action-dock {
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .status-card {
+            width: 100%;
+            padding: 24px 18px;
+            border-radius: 18px;
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
-            display: block;
+            background: linear-gradient(180deg, #101626 0%, #080c17 100%);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6), 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
         }
 
-        #msgs::after {
+        .status-card::before {
             content: '';
             position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 3px;
-            background: var(--neon-blue);
-            box-shadow: 0 0 12px var(--neon-blue);
+            top: 0; left: -100%;
+            width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: scanLight 3s infinite;
         }
+
+        @keyframes scanLight {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
+        .status-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            position: relative;
+            background: rgba(0, 240, 255, 0.1);
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 18px var(--neon-glow);
+            transition: all 0.4s ease;
+        }
+
+        .status-title {
+            font-size: 1.35rem;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+            line-height: 1.5;
+        }
+
+        .status-instruction {
+            font-size: 0.92rem;
+            color: var(--text-sub);
+            max-width: 90%;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        /* حالة التحميل الجاري */
+        .status-card.state-loading {
+            border-color: rgba(0, 240, 255, 0.4);
+        }
+        .status-card.state-loading .status-icon-wrapper {
+            border-color: var(--neon-blue);
+            color: var(--neon-blue);
+            animation: spinPulse 2s linear infinite;
+        }
+
+        @keyframes spinPulse {
+            0% { transform: rotate(0deg); box-shadow: 0 0 10px var(--neon-blue); }
+            50% { box-shadow: 0 0 25px var(--neon-blue); }
+            100% { transform: rotate(360deg); box-shadow: 0 0 10px var(--neon-blue); }
+        }
+
+        /* حالة النجاح التام وتفعيل الألعاب */
+        .status-card.state-success {
+            border-color: var(--success);
+            background: linear-gradient(180deg, #092419 0%, #06150e 100%);
+            box-shadow: 0 0 35px rgba(0, 255, 136, 0.35), inset 0 0 25px rgba(0, 255, 136, 0.15);
+            animation: successPulse 2s infinite alternate;
+        }
+        .status-card.state-success .status-icon-wrapper {
+            background: rgba(0, 255, 136, 0.15);
+            border-color: var(--success);
+            color: var(--success);
+            box-shadow: 0 0 25px var(--success);
+            animation: bounceCheck 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .status-card.state-success .status-title {
+            color: #afffdb;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.7);
+        }
+
+        /* حالة طلب إعادة التشغيل */
+        .status-card.state-reboot {
+            border-color: var(--warning);
+            background: linear-gradient(180deg, #271d05 0%, #150f02 100%);
+            box-shadow: 0 0 35px rgba(255, 183, 3, 0.35), inset 0 0 25px rgba(255, 183, 3, 0.15);
+            animation: warningPulse 1.8s infinite alternate;
+        }
+        .status-card.state-reboot .status-icon-wrapper {
+            background: rgba(255, 183, 3, 0.15);
+            border-color: var(--warning);
+            color: var(--warning);
+            box-shadow: 0 0 25px var(--warning);
+            animation: shakeWarn 1s ease-in-out infinite;
+        }
+        .status-card.state-reboot .status-title {
+            color: #ffe6a3;
+            text-shadow: 0 0 15px rgba(255, 183, 3, 0.7);
+        }
+
+        /* حالة طلب الخروج والدخول من المتصفح */
+        .status-card.state-reopen {
+            border-color: var(--reopen);
+            background: linear-gradient(180deg, #071f30 0%, #03101c 100%);
+            box-shadow: 0 0 35px rgba(56, 189, 248, 0.35), inset 0 0 25px rgba(56, 189, 248, 0.15);
+        }
+        .status-card.state-reopen .status-icon-wrapper {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: var(--reopen);
+            color: var(--reopen);
+            box-shadow: 0 0 25px var(--reopen);
+        }
+        .status-card.state-reopen .status-title {
+            color: #bae6fd;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.7);
+        }
+
+        @keyframes bounceCheck {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes shakeWarn {
+            0%, 100% { transform: rotate(0deg); }
+            20%, 60% { transform: rotate(-8deg); }
+            40%, 80% { transform: rotate(8deg); }
+        }
+
+        @keyframes successPulse {
+            from { border-color: rgba(0, 255, 136, 0.6); }
+            to { border-color: rgba(0, 255, 136, 1); box-shadow: 0 0 45px rgba(0, 255, 136, 0.5); }
+        }
+
+        @keyframes warningPulse {
+            from { border-color: rgba(255, 183, 3, 0.6); }
+            to { border-color: rgba(255, 183, 3, 1); box-shadow: 0 0 45px rgba(255, 183, 3, 0.5); }
+        }
+
+        .status-bar-indicator {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
+            transition: all 0.4s ease;
+        }
+        .state-success .status-bar-indicator { background: var(--success); box-shadow: 0 0 18px var(--success); }
+        .state-reboot .status-bar-indicator { background: var(--warning); box-shadow: 0 0 18px var(--warning); }
+        .state-reopen .status-bar-indicator { background: var(--reopen); box-shadow: 0 0 18px var(--reopen); }
 
         .hud-footer {
             margin-top: 30px;
             padding-top: 18px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #64748b;
         }
 
@@ -349,26 +547,34 @@
 
         .controller-hint span {
             display: inline-block;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border: 1px solid var(--neon-blue);
             border-radius: 50%;
-            line-height: 16px;
+            line-height: 18px;
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
+            box-shadow: 0 0 8px var(--neon-glow);
         }
 
         @media (max-width: 600px) {
-            .main-title { font-size: 1.4rem; }
+            .main-title { font-size: 1.55rem; }
             .hud-container { padding: 25px 15px; }
-            #msgs { font-size: 1rem; padding: 16px 10px; }
-            .hud-footer { flex-direction: column; gap: 10px; }
+            .status-title { font-size: 1.15rem; }
+            .status-instruction { font-size: 0.82rem; }
+            .hud-footer { flex-direction: column; gap: 12px; }
         }
     </style>
 </head>
 <body>
 
     <div class="hud-container">
+        <!-- زوايا تكنولوجية استعراضية -->
+        <div class="hud-corner corner-tl"></div>
+        <div class="hud-corner corner-tr"></div>
+        <div class="hud-corner corner-bl"></div>
+        <div class="hud-corner corner-br"></div>
+
         <header class="site-header">
             <div class="header-content">
                 <div class="logo-frame">
@@ -387,7 +593,7 @@
             </div>
         </header>
 
-        <!-- عداد الزيارات المتطور -->
+        <!-- عداد الزيارات المتطور (يبدأ من 542) -->
         <div class="visitor-dock">
             <div class="visitor-meta">
                 <div class="radar-box">
@@ -399,20 +605,27 @@
                 </div>
             </div>
             <div class="visitor-stats">
-                <span id="visitor-count">50</span>
+                <span id="visitor-count">542</span>
                 <span class="visitor-unit">زيارة</span>
             </div>
         </div>
 
-        <!-- صندوق معلومات المتصفح والبيئة -->
+        <!-- صندوق التيليميتري ومعلومات النظام -->
         <div class="telemetry-box">
-            <div id="UA">جارٍ فحص بيئة النظام...</div>
-            <div id="det">بانتظار قراءة البيانات...</div>
+            <div id="UA">جارٍ فحص بيئة النظام وقراءة المعالج...</div>
+            <div id="det">بانتظار قراءة بيانات النظام...</div>
         </div>
 
-        <!-- صندوق عرض الحالة والرسائل -->
+        <!-- محطة الحالة التفاعلية الذكية -->
         <div class="action-dock">
-            <h1 id="msgs">جارٍ تحميل نواة النظام... يرجى الانتظار</h1>
+            <div id="status-card" class="status-card state-loading">
+                <div id="status-icon" class="status-icon-wrapper">
+                    <span id="icon-symbol">&#9881;</span>
+                </div>
+                <h2 id="msgs" class="status-title">جارٍ تهيئة وحقن نواة النظام... يرجى الانتظار</h2>
+                <p id="sub-msg" class="status-instruction">الرجاء عدم إغلاق المتصفح أثناء تفريغ الذاكرة وتفعيل الثغرة البرمجية.</p>
+                <div class="status-bar-indicator"></div>
+            </div>
         </div>
 
         <footer class="hud-footer">
@@ -424,13 +637,91 @@
     </div>
 
 <script>
-/* نظام عداد الزيارات المتطور */
+/* واجهة التحكم الذكية بالحالات (UI State Manager) */
+var HostUI = {
+    card: document.getElementById("status-card"),
+    icon: document.getElementById("icon-symbol"),
+    title: document.getElementById("msgs"),
+    sub: document.getElementById("sub-msg"),
+
+    showLoading: function(text, subText) {
+        if (!this.card) return;
+        this.card.className = "status-card state-loading";
+        this.icon.innerHTML = "&#9881;";
+        this.title.innerHTML = text || "جارٍ تهيئة وحقن نواة النظام... يرجى الانتظار";
+        this.sub.innerHTML = subText || "الرجاء عدم إغلاق المتصفح حتى اكتمال المعالجة.";
+    },
+
+    showSuccess: function(customText) {
+        if (!this.card) return;
+        this.card.className = "status-card state-success";
+        this.icon.innerHTML = "&#10004;";
+        this.title.innerHTML = customText || "تم تفعيل الألعاب بنجاح تام!";
+        this.sub.innerHTML = "تم تحميل GoldHEN وتثبيت التعديل بنجاح. اضغط الآن على زر (PS) في اليد واستمتع باللعب!";
+    },
+
+    showReboot: function(customText) {
+        if (!this.card) return;
+        this.card.className = "status-card state-reboot";
+        this.icon.innerHTML = "&#9888;";
+        this.title.innerHTML = customText || "يلزم إعادة تشغيل جهاز البلايستيشن!";
+        this.sub.innerHTML = "تنبيه: واجه النظام تعارضاً في الذاكرة. يرجى إطفاء الجهاز وتشغيله مجدداً ثم إعادة المحاولة.";
+    },
+
+    showReopen: function(customText) {
+        if (!this.card) return;
+        this.card.className = "status-card state-reopen";
+        this.icon.innerHTML = "&#8635;";
+        this.title.innerHTML = customText || "ملاحظة: يرجى الخروج والدخول للمتصفح";
+        this.sub.innerHTML = "يرجى الضغط على زر (PS) في يد التحكم للخروج من المتصفح، ثم فتحه من جديد لإتمام التفعيل بنجاح.";
+    },
+
+    showError: function(errText) {
+        if (!this.card) return;
+        this.card.className = "status-card state-reboot";
+        this.icon.innerHTML = "&#10008;";
+        this.title.innerHTML = errText;
+        this.sub.innerHTML = "تأكد من مطابقة إصدار التحديث الرسمي أو أعد مسح كاش المتصفح.";
+    }
+};
+
+/* صائد تنبيهات المتصفح لتحويل رسائل البايلود إلى كروت تفاعلية */
+(function hookAlerts() {
+    var rawAlert = window.alert;
+    window.alert = function(msg) {
+        var str = String(msg || "");
+        var lower = str.toLowerCase();
+
+        if (lower.indexOf("goldhen") !== -1 || lower.indexOf("jailbreak") !== -1 || lower.indexOf("success") !== -1 || lower.indexOf("loaded") !== -1) {
+            HostUI.showSuccess("تم تفعيل الألعاب والنظام بنجاح!");
+            return;
+        }
+
+        if (lower.indexOf("reboot") !== -1 || lower.indexOf("restart") !== -1 || lower.indexOf("kernel") !== -1 || lower.indexOf("panic") !== -1) {
+            HostUI.showReboot("يرجى إعادة تشغيل جهاز البلايستيشن");
+            return;
+        }
+
+        if (lower.indexOf("re-open") !== -1 || lower.indexOf("reopen") !== -1 || lower.indexOf("close browser") !== -1 || lower.indexOf("out of memory") !== -1 || lower.indexOf("exit") !== -1) {
+            HostUI.showReopen("ملاحظة: اخرج من المتصفح وأعد الدخول");
+            return;
+        }
+
+        HostUI.title.innerHTML = str;
+    };
+})();
+
+/* نظام عداد الزيارات الهجين - تم ضبط القيمة الأساسية على 542 */
 (function setupVisitorCounter() {
     var countEl = document.getElementById("visitor-count");
-    var baseVisits = 50;
-    var storageKey = "aliosama_visits_v50";
+    var baseVisits = 542;
+    var storageKey = "aliosama_visits_v542";
     
-    var current = parseInt(localStorage.getItem(storageKey) || baseVisits, 10);
+    var stored = localStorage.getItem(storageKey);
+    var current = stored ? parseInt(stored, 10) : baseVisits;
+    if (isNaN(current) || current < baseVisits) {
+        current = baseVisits;
+    }
     current++;
     localStorage.setItem(storageKey, current);
 
@@ -458,7 +749,7 @@
     }
 })();
 
-/* المنطق البرمجي الكامل لفحص النظام والتوجيه والتحميل */
+/* فحص بنية الجهاز وتوجيه الكاش وحقن الثغرة */
 (function initSystemHost() {
     var uaFull = navigator.userAgent;
     var match = uaFull.match(/PlayStation 4[ /]([\d.]+)/i);
@@ -468,23 +759,21 @@
 
     var uaBox = document.getElementById("UA");
     var detBox = document.getElementById("det");
-    var msgs = document.getElementById("msgs");
 
     if (uaBox) uaBox.textContent = uaFull;
     if (detBox) {
-        detBox.innerHTML = "إصدار النظام: <b>" + fwVersion + "</b> &middot; الجهاز: <b>" + (isPS4 ? "بلايستيشن 4" : "كمبيوتر / جهاز آخر") + "</b>";
+        detBox.innerHTML = "إصدار النظام: <b>" + fwVersion + "</b> &middot; الجهاز: <b>" + (isPS4 ? "بلايستيشن 4" : "كمبيوتر / جهاز خارجي") + "</b>";
     }
 
     function onScriptError() {
-        if (msgs) msgs.innerHTML = "لم يتم العثور على الملفات! - امسح بيانات المتصفح وأعد تثبيت الكاش...";
+        HostUI.showError("لم يتم العثور على الملفات! - امسح بيانات المتصفح وأعد تثبيت الكاش");
     }
 
     if (!isPS4) {
-        if (msgs) msgs.innerHTML = "يعمل من نظام 7.00 الى 13.52";
+        HostUI.showLoading("النظام جاهز", "الهوست يدعم أجهزة بلايستيشن 4 من تحديث 5.05 إلى 13.52.");
         return;
     }
 
-    // التحقق من حالة الكاش: 0 تعني أول تشغيل وتوجيه مباشر لصفحة الكاش المناسبة
     if (window.applicationCache && window.applicationCache.status == 0) {
         if (fwNum == 5.05 || fwNum == 5.07) {
             window.location.replace("cache505.html");
@@ -497,10 +786,9 @@
         } else if (fwNum >= 11.50 && fwNum <= 13.52) {
             window.location.replace("cacheslopkit.html");
         } else {
-            if (msgs) msgs.innerHTML = 'إصدار غير مدعوم: <span style="color: red;">' + fwVersion + '</span>';
+            HostUI.showError('إصدار غير مدعوم: ' + fwVersion);
         }
     } else {
-        // حقن السكربت المخصص للنظام عند التشغيل أوفلاين
         function loadPayload(path, isModule, callback) {
             var script = document.createElement('script');
             if (isModule) script.type = 'module';
@@ -519,7 +807,9 @@
         } else if (fwNum >= 10.00 && fwNum <= 11.02) {
             loadPayload("css/" + "main.js", false, function() {
                 setTimeout(function() {
-                    if (typeof doJb === "function") doJb();
+                    if (typeof doJb === "function") {
+                        doJb();
+                    }
                 }, 500);
             });
         } else if (fwNum >= 11.50 && fwNum <= 12.02) {
@@ -529,7 +819,7 @@
         } else if (fwNum >= 13.02 && fwNum <= 13.52) {
             loadPayload("slopkit/" + "jb.js", true);
         } else {
-            if (msgs) msgs.innerHTML = 'إصدار غير مدعوم: <span style="color: red;">' + fwVersion + '</span>';
+            HostUI.showError('إصدار غير مدعوم: ' + fwVersion);
         }
     }
 })();
