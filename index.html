@@ -1,537 +1,468 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>المطور علي أسامة / 07749932347</title>
-    <style>
-        :root {
-            --neon-blue: #00f0ff;
-            --ps-blue: #0070d1;
-            --neon-glow: rgba(0, 240, 255, 0.4);
-            --bg-dark: #05070d;
-            --card-bg: rgba(10, 15, 29, 0.85);
-            --border-line: rgba(0, 240, 255, 0.25);
-            --text-main: #f1f5f9;
-            --text-sub: #94a3b8;
-            --warning: #ffb703;
-            --danger: #ff0055;
-            --success: #00ff88;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#050810">
+<title>بلاي ستيشن الحنين · PS4A</title>
+<style>
+/* ═══════════════════════════════════════════
+   الألوان مستوحاة من الشعار (نيون + خلفية داكنة)
+   ═══════════════════════════════════════════ */
+:root{
+  --bg: #050810;
+  --surface: #0a1120;
+  --border: #1a2a45;
+  --pink: #ff007f;
+  --cyan: #00d4ff;
+  --gold: #ffcc00;
+  --text: #ffffff;
+  --muted: #8fa0b5;
+  --success: #00ff9d;
+  --danger: #ff3d71;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Arabic', sans-serif;
-            -webkit-user-select: none;
-            user-select: none;
-        }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
-        body {
-            background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 50% 10%, rgba(0, 112, 209, 0.25) 0%, transparent 50%),
-                radial-gradient(circle at 50% 90%, rgba(0, 240, 255, 0.1) 0%, transparent 60%),
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px 15px;
-            direction: rtl;
-            overflow-x: hidden;
-        }
+body{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(255,204,0,0.05) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(255,0,127,0.05) 0%, transparent 50%);
+}
 
-        .hud-container {
-            width: 100%;
-            max-width: 760px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-line);
-            border-radius: 24px;
-            padding: 35px 25px;
-            position: relative;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            box-shadow: 
-                0 20px 50px rgba(0, 0, 0, 0.85),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                0 0 25px rgba(0, 240, 255, 0.15);
-            text-align: center;
-        }
+.wrap {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
-        .hud-container::before {
-            content: '';
-            position: absolute;
-            top: -2px; left: 50px; right: 50px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
-            box-shadow: 0 0 10px var(--neon-blue);
-        }
+/* ═══════════════════════════════════════════
+   الشعار المصنوع بـ CSS 
+   ═══════════════════════════════════════════ */
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
 
-        header, .site-header {
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            padding: 0 !important;
-            margin: 0 0 20px 0 !important;
-        }
+.neon-ring {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.4), inset 0 0 15px rgba(255, 204, 0, 0.4);
+  background: radial-gradient(circle, #0a1525 40%, var(--bg) 100%);
+}
 
-        .header-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+.neon-ring::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  border: 2px solid var(--pink);
+  border-left-color: var(--cyan);
+  border-bottom-color: var(--cyan);
+  animation: spin 10s linear infinite;
+  box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
+}
 
-        .logo-frame {
-            position: relative;
-            width: 110px;
-            height: 110px;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+.controller-svg {
+  width: 70px;
+  height: 70px;
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.8));
+  z-index: 2;
+}
 
-        .logo-frame::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            border: 2px dashed rgba(0, 240, 255, 0.6);
-            animation: rotateRing 15s linear infinite;
-        }
+.logo-text {
+  margin-top: 12px;
+  text-align: center;
+  line-height: 1.2;
+}
+.logo-text .line1 {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--pink);
+  text-shadow: 0 0 8px rgba(255,0,127,0.6), 2px 2px 0 var(--gold);
+  letter-spacing: -1px;
+}
+.logo-text .line2 {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--pink);
+  text-shadow: 0 0 8px rgba(255,0,127,0.6), 2px 2px 0 var(--gold);
+  letter-spacing: -1px;
+}
 
-        @keyframes rotateRing {
-            100% { transform: rotate(360deg); }
-        }
+@keyframes spin { 100% { transform: rotate(360deg); } }
 
-        .header-logo {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 15px var(--neon-glow);
-            z-index: 2;
-        }
+/* ═══════════════════════════════════════════
+   بطاقات المعلومات
+   ═══════════════════════════════════════════ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
 
-        .main-title {
-            font-size: 1.9rem;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-            color: #ffffff !important;
-            text-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
-            margin-bottom: 8px;
-        }
+.card::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: 20px; right: 20px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--pink), transparent);
+  border-radius: 2px;
+}
 
-        .sub-tagline {
-            font-size: 0.85rem;
-            color: var(--text-sub) !important;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
+.card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.card-title::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--cyan);
+}
 
-        .dev-badge-wrapper {
-            margin-bottom: 20px;
-        }
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.info-row:last-child { border-bottom: none; padding-bottom: 0; }
+.info-row:first-of-type { padding-top: 0; }
 
-        .dev-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(90deg, rgba(0, 112, 209, 0.3), rgba(0, 240, 255, 0.3)) !important;
-            border: 1px solid var(--neon-blue) !important;
-            padding: 8px 22px;
-            border-radius: 50px;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
-        }
+.info-label { font-size: 14px; color: var(--muted); font-weight: 600; }
+.info-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(0, 212, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+.info-value.fw { color: var(--gold); background: rgba(255, 204, 0, 0.1); border-color: rgba(255, 204, 0, 0.3); }
 
-        .dev-badge a {
-            color: #ffffff !important;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 0.95rem;
-            letter-spacing: 1px;
-            direction: ltr;
-        }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-left: 6px; }
+.dot.on { background: var(--success); box-shadow: 0 0 8px var(--success); }
+.dot.off { background: var(--danger); box-shadow: 0 0 8px var(--danger); }
 
-        .dev-badge .dot {
-            width: 8px;
-            height: 8px;
-            background: var(--neon-blue);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--neon-blue);
-        }
+/* ═══════════════════════════════════════════
+   زر التشغيل
+   ═══════════════════════════════════════════ */
+.btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 900;
+  color: #000;
+  cursor: pointer;
+  background: linear-gradient(45deg, var(--gold), #ffdd55);
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255, 204, 0, 0.6); }
+.btn:active:not(:disabled) { transform: translateY(0); }
+.btn:disabled { background: var(--surface); color: var(--muted); border: 1px solid var(--border); box-shadow: none; cursor: not-allowed; }
 
-        .visitor-dock {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(3, 7, 18, 0.7);
-            border: 1px solid rgba(0, 240, 255, 0.25);
-            border-radius: 16px;
-            padding: 12px 20px;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.05);
-        }
+/* ═══════════════════════════════════════════
+   شبكة الإحصائيات
+   ═══════════════════════════════════════════ */
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mini-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+}
+.mini-card .num { font-size: 18px; font-weight: 800; color: var(--pink); text-shadow: 0 0 8px rgba(255,0,127,0.3); }
+.mini-card .lbl { font-size: 12px; color: var(--muted); font-weight: 600; margin-top: 4px; }
 
-        .visitor-dock::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--neon-blue);
-            box-shadow: 0 0 10px var(--neon-blue);
-        }
+/* ═══════════════════════════════════════════
+   التذييل والحقوق (بدون تحذيرات)
+   ═══════════════════════════════════════════ */
+.footer {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  padding: 20px 0;
+  line-height: 1.8;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  margin-top: 10px;
+}
+.footer .dev { color: var(--cyan); font-weight: 700; text-decoration: none; }
+.footer .rights { display: block; font-size: 11px; color: #4a5a75; margin-top: 6px; }
 
-        .visitor-meta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-align: right;
-        }
-
-        .radar-box {
-            position: relative;
-            width: 38px;
-            height: 38px;
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .radar-pulse {
-            width: 10px;
-            height: 10px;
-            background: var(--neon-blue);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--neon-blue);
-            animation: pulseGlow 1.8s infinite;
-        }
-
-        @keyframes pulseGlow {
-            0% { transform: scale(0.9); box-shadow: 0 0 5px var(--neon-blue); }
-            50% { transform: scale(1.3); box-shadow: 0 0 15px var(--neon-blue); }
-            100% { transform: scale(0.9); box-shadow: 0 0 5px var(--neon-blue); }
-        }
-
-        .visitor-titles {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .visitor-title {
-            font-size: 0.95rem;
-            font-weight: 800;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-        }
-
-        .visitor-sub {
-            font-size: 0.75rem;
-            color: var(--text-sub);
-            letter-spacing: 0.5px;
-        }
-
-        .visitor-stats {
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-            direction: ltr;
-        }
-
-        #visitor-count {
-            font-size: 1.5rem;
-            font-weight: 900;
-            font-family: 'Consolas', 'Courier New', monospace;
-            color: var(--neon-blue);
-            text-shadow: 0 0 12px var(--neon-glow);
-            letter-spacing: 2px;
-        }
-
-        .visitor-unit {
-            font-size: 0.75rem;
-            color: var(--text-sub);
-            font-weight: 700;
-        }
-
-        .telemetry-box {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            background: rgba(3, 7, 18, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 20px;
-        }
-
-        #UA {
-            font-size: 0.85rem;
-            color: #38bdf8;
-            font-family: 'Courier New', Courier, monospace;
-            direction: ltr;
-            letter-spacing: 0.5px;
-            word-break: break-all;
-        }
-
-        #det {
-            font-size: 0.85rem;
-            color: var(--text-sub);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding-top: 10px;
-        }
-
-        #det b {
-            color: var(--neon-blue);
-        }
-
-        .action-dock {
-            margin: 15px 0;
-        }
-
-        #msgs {
-            width: 100%;
-            padding: 22px 15px;
-            font-size: 1.25rem;
-            font-weight: 800;
-            background: linear-gradient(180deg, #111827 0%, #0b0f19 100%);
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #ffffff;
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
-            display: block;
-        }
-
-        #msgs::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 3px;
-            background: var(--neon-blue);
-            box-shadow: 0 0 12px var(--neon-blue);
-        }
-
-        .hud-footer {
-            margin-top: 30px;
-            padding-top: 18px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            color: #64748b;
-        }
-
-        .controller-hint {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--neon-blue);
-            font-weight: bold;
-        }
-
-        .controller-hint span {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 1px solid var(--neon-blue);
-            border-radius: 50%;
-            line-height: 16px;
-            text-align: center;
-            font-size: 0.7rem;
-        }
-
-        @media (max-width: 600px) {
-            .main-title { font-size: 1.4rem; }
-            .hud-container { padding: 25px 15px; }
-            #msgs { font-size: 1rem; padding: 16px 10px; }
-            .hud-footer { flex-direction: column; gap: 10px; }
-        }
-    </style>
+/* رسائل التنبيه */
+.toast {
+  position: fixed; bottom: 20px; left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--surface); border: 1px solid var(--pink);
+  color: white; padding: 10px 20px; border-radius: 8px;
+  font-size: 13px; font-weight: bold; opacity: 0; transition: 0.3s; z-index: 99;
+  box-shadow: 0 0 15px rgba(255,0,127,0.4);
+  width: max-content; max-width: 90%; text-align: center;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+</style>
 </head>
 <body>
 
-    <div class="hud-container">
-        <header class="site-header">
-            <div class="header-content">
-                <div class="logo-frame">
-                    <img src="logo.jpg" alt="شعار المطور" class="header-logo" onerror="this.style.display='none'; document.querySelector('.logo-frame').style.display='none';">
-                </div>
+<div class="wrap">
 
-                <h1 class="main-title">المطور علي أسامة</h1>
-                <p class="sub-tagline">دعم التحديثات المتعددة (5.05 - 13.52)</p>
-
-                <div class="dev-badge-wrapper">
-                    <div class="dev-badge">
-                        <div class="dot"></div>
-                        <a href="https://t.me/BBTBB" target="_blank">USER : @BBTBB • NM : 07749932347</a>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- عداد الزيارات المتطور -->
-        <div class="visitor-dock">
-            <div class="visitor-meta">
-                <div class="radar-box">
-                    <div class="radar-pulse"></div>
-                </div>
-                <div class="visitor-titles">
-                    <span class="visitor-title">إجمالي الزيارات</span>
-                    <span class="visitor-sub">عداد الزيارات الإجمالي</span>
-                </div>
-            </div>
-            <div class="visitor-stats">
-                <span id="visitor-count">50</span>
-                <span class="visitor-unit">زيارة</span>
-            </div>
-        </div>
-
-        <!-- صندوق معلومات المتصفح والبيئة -->
-        <div class="telemetry-box">
-            <div id="UA">جارٍ فحص بيئة النظام...</div>
-            <div id="det">بانتظار قراءة البيانات...</div>
-        </div>
-
-        <!-- صندوق عرض الحالة والرسائل -->
-        <div class="action-dock">
-            <h1 id="msgs">جارٍ تحميل نواة النظام... يرجى الانتظار</h1>
-        </div>
-
-        <footer class="hud-footer">
-            <div>منظومة المضيف الإصدار v13.52 &middot; &copy; 2026 علي أسامة</div>
-            <div class="controller-hint">
-                <span>&#10005;</span> اضغط X للتنفيذ
-            </div>
-        </footer>
+  <!-- الشعار -->
+  <header class="logo-container">
+    <div class="neon-ring">
+      <svg class="controller-svg" viewBox="0 0 24 24">
+        <path d="M6 10h4M8 8v4M15 9h.01M18 11h.01M17.32 5H6.68a4 4 0 0 0-3.97 3.53l-1 8.47A3 3 0 0 0 4.66 20a3 3 0 0 0 2.83-2l.53-1.6a2 2 0 0 1 1.9-1.4h4.16a2 2 0 0 1 1.9 1.4l.53 1.6a3 3 0 0 0 2.83 2 3 3 0 0 0 2.95-3l-1-8.47A4 4 0 0 0 17.32 5z"/>
+      </svg>
     </div>
+    <div class="logo-text">
+      <div class="line1">بلاي ستيشن</div>
+      <div class="line2">الحنين</div>
+    </div>
+  </header>
+
+  <!-- بطاقة النظام -->
+  <section class="card">
+    <div class="card-title">حالة النظام</div>
+    <div class="info-row">
+      <span class="info-label">الجهاز</span>
+      <span class="info-value" id="deviceName">—</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">إصدار النظام</span>
+      <span class="info-value fw" id="fwVersion">جارٍ الفحص…</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">حالة الكاش</span>
+      <span class="info-value" id="cacheState">
+        <span class="dot off"></span>غير مخزّن
+      </span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">الحمولة</span>
+      <span class="info-value" id="payloadName">GoldHEN 2.4b</span>
+    </div>
+  </section>
+
+  <!-- زر التشغيل -->
+  <button class="btn" id="bootBtn" disabled>جارٍ اكتشاف النظام…</button>
+
+  <!-- الإحصائيات -->
+  <div class="grid">
+    <div class="mini-card">
+      <div class="num" id="visitCount">—</div>
+      <div class="lbl">الزيارات</div>
+    </div>
+    <div class="mini-card">
+      <div class="num" id="hostStatus">—</div>
+      <div class="lbl">الاتصال</div>
+    </div>
+  </div>
+
+  <!-- الحقوق الأصلية (بدون تحذير) -->
+  <footer class="footer">
+    تصميم وتطوير <a class="dev" href="https://t.me/BBTBB" target="_blank" rel="noopener">علي أسامة (@BBTBB)</a>
+    <span class="rights">جميع الحقوق محفوظة &copy; 2024</span>
+  </footer>
+
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-/* نظام عداد الزيارات المتطور */
-(function setupVisitorCounter() {
-    var countEl = document.getElementById("visitor-count");
-    var baseVisits = 50;
-    var storageKey = "aliosama_visits_v50";
+/* ═══════════════════════════════════════════
+   المنطق البرمجي الأساسي
+   ═══════════════════════════════════════════ */
+(function(){
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+  const ui = {
+    device: $('deviceName'),
+    fw: $('fwVersion'),
+    cache: $('cacheState'),
+    payload: $('payloadName'),
+    bootBtn: $('bootBtn'),
+    visits: $('visitCount'),
+    host: $('hostStatus'),
+    toast: $('toast')
+  };
+
+  function showToast(msg, isError){
+    ui.toast.textContent = msg;
+    ui.toast.style.borderColor = isError ? 'var(--danger)' : 'var(--cyan)';
+    ui.toast.style.boxShadow = isError ? '0 0 15px rgba(255,61,113,0.4)' : '0 0 15px rgba(0,212,255,0.4)';
+    ui.toast.className = 'toast show';
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => ui.toast.className = 'toast', 3500);
+  }
+
+  function setCacheState(active){
+    ui.cache.innerHTML = active
+      ? '<span class="dot on"></span>مخزّن'
+      : '<span class="dot off"></span>غير مخزّن';
+  }
+
+  function initVisits(){
+    const KEY = 'aliosama_visits_v50';
+    let local = parseInt(localStorage.getItem(KEY) || '0', 10) + 1;
+    localStorage.setItem(KEY, local);
+    ui.visits.textContent = local;
+
+    if (navigator.onLine){
+      fetch('https://api.counterapi.dev/v1/ps4a-hud/visits/up')
+        .then(r => r.ok ? r.json() : null)
+        .then(d => { if (d && d.count) ui.visits.textContent = d.count; })
+        .catch(() => {});
+    }
+  }
+
+  function initHostStatus(){
+    ui.host.textContent = navigator.onLine ? 'متصل' : 'أوفلاين';
+    window.addEventListener('online', () => ui.host.textContent = 'متصل');
+    window.addEventListener('offline', () => ui.host.textContent = 'أوفلاين');
+  }
+
+  function detectFirmware(ua){
+    const patterns = [
+      /PlayStation 4\/([\d.]+)/i,
+      /Mozilla\/5\.0 \(PlayStation 4 ([\d.]+)\)/i
+    ];
+    for (const p of patterns){
+      const m = ua.match(p);
+      if (m) return m[1];
+    }
+    return null;
+  }
+
+  function resolvePayload(fw){
+    if (!fw) return null;
+    const v = parseFloat(fw);
+
+    if (v >= 5.05 && v <= 5.07) return { path:'505/exploit.js',    cache:'cache505.html' };
+    if (v >= 7.00 && v <= 8.52) return { path:'700/alert.js',      cache:'cache700.html' };
+    if (v >= 9.00 && v <= 9.60) return { path:'900/alert.js',      cache:'cache900.html' };
+    if (v >= 10.00 && v <= 11.02) return { path:'css/main.js',     cache:'cachecss.html' };
+    if (v >= 11.50 && v <= 13.52) return { path:'slopkit/jb.js',   cache:'cacheslopkit.html' };
+    return null;
+  }
+
+  function loadPayload(path){
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = path;
+      s.async = true;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error('فشل تحميل: ' + path));
+      document.body.appendChild(s);
+    });
+  }
+
+  async function initSystemHost(){
+    const ua = navigator.userAgent;
+    const isPS4 = /PlayStation 4/i.test(ua);
+
+    ui.device.textContent = isPS4 ? 'PlayStation 4' : 'متصفح آخر';
+    const fw = detectFirmware(ua);
+
+    if (!fw){
+      ui.fw.textContent = 'غير معروف';
+      ui.bootBtn.disabled = true;
+      ui.bootBtn.textContent = 'افتح من متصفح PS4';
+      showToast('لم يتم اكتشاف PS4 — افتح الرابط من الجهاز', true);
+      return;
+    }
+
+    ui.fw.textContent = fw;
+    const payload = resolvePayload(fw);
     
-    var current = parseInt(localStorage.getItem(storageKey) || baseVisits, 10);
-    current++;
-    localStorage.setItem(storageKey, current);
-
-    function render(num) {
-        if (countEl) countEl.textContent = Number(num).toLocaleString('en-US');
-    }
-    render(current);
-
-    if (navigator.onLine) {
-        fetch("https://api.counterapi.dev/v1/aliosama_ps4_global/hits/up")
-            .then(function(res) {
-                if (!res.ok) throw new Error("HTTP error " + res.status);
-                return res.json();
-            })
-            .then(function(data) {
-                if (data && typeof data.count === "number") {
-                    var total = baseVisits + data.count;
-                    if (total > current) {
-                        localStorage.setItem(storageKey, total);
-                        render(total);
-                    }
-                }
-            })
-            .catch(function(err) {});
-    }
-})();
-
-/* المنطق البرمجي الكامل لفحص النظام والتوجيه والتحميل */
-(function initSystemHost() {
-    var uaFull = navigator.userAgent;
-    var match = uaFull.match(/PlayStation 4[ /]([\d.]+)/i);
-    var isPS4 = (match !== null);
-    var fwVersion = isPS4 ? match[1] : "غير معروف";
-    var fwNum = isPS4 ? parseFloat(fwVersion) : 0;
-
-    var uaBox = document.getElementById("UA");
-    var detBox = document.getElementById("det");
-    var msgs = document.getElementById("msgs");
-
-    if (uaBox) uaBox.textContent = uaFull;
-    if (detBox) {
-        detBox.innerHTML = "إصدار النظام: <b>" + fwVersion + "</b> &middot; الجهاز: <b>" + (isPS4 ? "بلايستيشن 4" : "كمبيوتر / جهاز آخر") + "</b>";
+    if (!payload){
+      ui.payload.textContent = 'غير مدعوم';
+      ui.bootBtn.disabled = true;
+      ui.bootBtn.textContent = 'إصدار غير مدعوم';
+      showToast('إصدار النظام ' + fw + ' غير مدعوم حاليًا', true);
+      return;
     }
 
-    function onScriptError() {
-        if (msgs) msgs.innerHTML = "لم يتم العثور على الملفات! - امسح بيانات المتصفح وأعد تثبيت الكاش...";
-    }
+    ui.payload.textContent = payload.path.split('/').pop();
+    const hasCache = !!(window.applicationCache && window.applicationCache.status !== 0);
+    setCacheState(hasCache);
 
-    if (!isPS4) {
-        if (msgs) msgs.innerHTML = "يعمل من نظام 7.00 الى 13.52";
+    ui.bootBtn.disabled = false;
+    ui.bootBtn.textContent = hasCache ? 'تشغيل الحمولة الآن' : 'تحضير الكاش (أول مرة)';
+
+    ui.bootBtn.addEventListener('click', async () => {
+      ui.bootBtn.disabled = true;
+      ui.bootBtn.textContent = 'جارٍ التنفيذ…';
+
+      if (!hasCache && 'applicationCache' in window){
+        showToast('جاري تحضير الكاش لأول مرة…');
+        location.href = payload.cache;
         return;
-    }
+      }
 
-    // التحقق من حالة الكاش: 0 تعني أول تشغيل وتوجيه مباشر لصفحة الكاش المناسبة
-    if (window.applicationCache && window.applicationCache.status == 0) {
-        if (fwNum == 5.05 || fwNum == 5.07) {
-            window.location.replace("cache505.html");
-        } else if (fwNum >= 7.00 && fwNum <= 8.52) {
-            window.location.replace("cache700.html");
-        } else if (fwNum >= 9.00 && fwNum <= 9.60) {
-            window.location.replace("cache900.html");
-        } else if (fwNum >= 10.00 && fwNum <= 11.02) {
-            window.location.replace("cachecss.html");
-        } else if (fwNum >= 11.50 && fwNum <= 13.52) {
-            window.location.replace("cacheslopkit.html");
-        } else {
-            if (msgs) msgs.innerHTML = 'إصدار غير مدعوم: <span style="color: red;">' + fwVersion + '</span>';
-        }
-    } else {
-        // حقن السكربت المخصص للنظام عند التشغيل أوفلاين
-        function loadPayload(path, isModule, callback) {
-            var script = document.createElement('script');
-            if (isModule) script.type = 'module';
-            script.src = path;
-            script.onerror = onScriptError;
-            if (callback) script.onload = callback;
-            document.head.appendChild(script);
-        }
+      try{
+        await loadPayload(payload.path);
+        ui.bootBtn.textContent = 'تم التشغيل بنجاح ✓';
+        ui.bootBtn.style.background = 'var(--success)';
+        showToast('تم تحميل الحمولة بنجاح');
+      }catch(err){
+        ui.bootBtn.disabled = false;
+        ui.bootBtn.textContent = 'إعادة المحاولة';
+        showToast('فشل التحميل — امسح بيانات المتصفح وأعد المحاولة', true);
+      }
+    });
+  }
 
-        if (fwNum == 5.05 || fwNum == 5.07) {
-            loadPayload("505/" + "exploit.js", false);
-        } else if (fwNum >= 7.00 && fwNum <= 8.52) {
-            loadPayload("700/" + "alert.js", true);
-        } else if (fwNum >= 9.00 && fwNum <= 9.60) {
-            loadPayload("900/" + "alert.js", true);
-        } else if (fwNum >= 10.00 && fwNum <= 11.02) {
-            loadPayload("css/" + "main.js", false, function() {
-                setTimeout(function() {
-                    if (typeof doJb === "function") doJb();
-                }, 500);
-            });
-        } else if (fwNum >= 11.50 && fwNum <= 12.02) {
-            loadPayload("slopkit/" + "chain_lapse.js", true);
-        } else if (fwNum >= 12.50 && fwNum <= 13.00) {
-            loadPayload("slopkit/" + "chain_poops.js", true);
-        } else if (fwNum >= 13.02 && fwNum <= 13.52) {
-            loadPayload("slopkit/" + "jb.js", true);
-        } else {
-            if (msgs) msgs.innerHTML = 'إصدار غير مدعوم: <span style="color: red;">' + fwVersion + '</span>';
-        }
-    }
+  document.addEventListener('DOMContentLoaded', () => {
+    initVisits();
+    initHostStatus();
+    initSystemHost();
+  });
+
 })();
 </script>
 </body>
