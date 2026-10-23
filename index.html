@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 
-<!-- 🔴 تعريف المتغير msgs مبكراً لتجنب خطأ lapse.js -->
+<!-- 🔴 إصلاح متغير msgs لتجنب أي خطأ -->
 <script>
     var msgs = { innerHTML: "" };
     window.msgs = msgs;
@@ -86,6 +86,7 @@ body{
   transition: all 0.2s ease; position: relative; overflow: hidden;
 }
 .btn:disabled { background: var(--surface); color: var(--muted); border: 1px solid var(--border); box-shadow: none; cursor: not-allowed; }
+.btn.success { background: var(--success); color: #000 !important; text-shadow: none; box-shadow: 0 0 20px var(--success); }
 
 /* شبكة الإحصائيات */
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -93,7 +94,7 @@ body{
 .mini-card .num { font-size: 20px; font-weight: 800; color: var(--pink); text-shadow: 0 0 8px rgba(255,0,127,0.3); direction: ltr; }
 .mini-card .lbl { font-size: 13px; color: var(--muted); font-weight: 700; margin-top: 4px; }
 
-/* التذييل */
+/* التذييل - تم تعديل الرقم هنا */
 .footer { text-align: center; font-size: 14px; color: var(--text); padding: 20px 0; line-height: 1.9; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
 .footer .dev-box { color: var(--gold); font-weight: 700; font-size: 15px; }
 .footer .contact { font-weight: 700; }
@@ -148,7 +149,7 @@ body{
     </div>
   </section>
 
-  <!-- زر التشغيل التلقائي -->
+  <!-- زر التشغيل -->
   <button class="btn" id="bootBtn" disabled>جارٍ اكتشاف النظام…</button>
 
   <!-- الإحصائيات -->
@@ -163,29 +164,19 @@ body{
     </div>
   </div>
 
-  <!-- التذييل -->
+  <!-- التذييل (تم تغيير الرقم إلى 07749932347) -->
   <footer class="footer">
     <div class="dev-box">تصميم وتطوير : ( بلاي ستور المشتل )</div>
-    <div class="contact">تواصل : <a href="tel:07733340622">07733340622</a></div>
+    <div class="contact">تواصل : <a href="tel:07749932347">07749932347</a></div>
     <div class="location">موقعنا : بغداد / المشتل / شارع الكوسترات</div>
     <span class="rights">جميع الحقوق محفوظة &copy; 2026</span>
   </footer>
 </div>
 
-<!-- عنصر وهمي مخفي ليكون مقصوداً للسكربتات -->
 <div id="msgs" style="display:none; visibility:hidden;"></div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-/* ═══════════════════════════════════════════════════════════
-   تم إزالة كود منع زر O (popstate) نهائياً 
-   لأنه يتعارض مع سكربت PSFree ويسبب خطأ DieError
-   ═══════════════════════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════════════════════
-   المنطق الأساسي للتشغيل التلقائي 100%
-   ═══════════════════════════════════════════════════════════ */
 (function(){
   'use strict';
 
@@ -276,23 +267,38 @@ body{
     }
 
     ui.payload.textContent = payload.path.split('/').pop();
+    
     const hasCache = !!(window.applicationCache && window.applicationCache.status !== 0);
     setCacheState(hasCache);
 
+    ui.bootBtn.disabled = false;
+    
     if (!hasCache) {
-      ui.bootBtn.textContent = 'جاري تحضير الكاش تلقائياً...';
-      setTimeout(() => { window.location.replace(payload.cache); }, 1000);
+      ui.bootBtn.textContent = 'تحضير الكاش (اضغط هنا)';
+      ui.bootBtn.onclick = function() {
+        ui.bootBtn.disabled = true;
+        ui.bootBtn.textContent = 'جاري تحضير الكاش...';
+        showToast('جاري التحويل لصفحة الكاش...');
+        setTimeout(() => { window.location.replace(payload.cache); }, 500);
+      };
     } else {
-      ui.bootBtn.textContent = 'جاري تحميل الحمولة...';
-      try {
-        await loadPayload(payload.path);
-        ui.bootBtn.textContent = 'تم التشغيل بنجاح ✓';
-        ui.bootBtn.style.background = 'var(--success)';
-        showToast('تم تحميل الحمولة بنجاح');
-      } catch(err) {
-        ui.bootBtn.textContent = 'فشل التحميل، إعادة محاولة...';
-        setTimeout(() => location.reload(), 3000);
-      }
+      ui.bootBtn.textContent = 'تشغيل الحمولة الآن (اضغط هنا)';
+      
+      ui.bootBtn.onclick = async function() {
+        ui.bootBtn.disabled = true;
+        ui.bootBtn.textContent = 'جارٍ التنفيذ… (الرجاء الانتظار)';
+        
+        try {
+          await loadPayload(payload.path);
+          ui.bootBtn.className = 'btn success'; 
+          ui.bootBtn.textContent = 'تم التشغيل بنجاح ✓';
+          showToast('تم تحميل الحمولة بنجاح');
+        } catch(err) {
+          ui.bootBtn.disabled = false;
+          ui.bootBtn.textContent = 'فشل التحميل - إعادة المحاولة';
+          showToast('فشل التحميل، جرب مرة أخرى', true);
+        }
+      };
     }
   }
 
