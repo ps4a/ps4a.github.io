@@ -10,9 +10,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════
-   الألوان مستوحاة من الشعار (نيون + خلفية داكنة)
-   ═══════════════════════════════════════════ */
 :root{
   --bg: #050810;
   --surface: #0a1120;
@@ -25,11 +22,8 @@
   --success: #00ff9d;
   --danger: #ff3d71;
 }
-
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-
 body{
-  /* تطبيق الخط الجديد */
   font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   background-color: var(--bg);
   color: var(--text);
@@ -42,215 +36,70 @@ body{
     radial-gradient(circle at 50% 0%, rgba(255,204,0,0.05) 0%, transparent 50%),
     radial-gradient(circle at 100% 100%, rgba(255,0,127,0.05) 0%, transparent 50%);
 }
+.wrap { width: 100%; max-width: 500px; padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; }
 
-.wrap {
-  width: 100%;
-  max-width: 500px;
-  padding: 20px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* ═══════════════════════════════════════════
-   الشعار المصنوع بـ CSS 
-   ═══════════════════════════════════════════ */
-.logo-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
-
+/* الشعار */
+.logo-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; margin-top: 10px; }
 .neon-ring {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  border: 3px solid var(--gold);
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--gold);
+  position: relative; display: flex; justify-content: center; align-items: center;
   box-shadow: 0 0 15px rgba(255, 204, 0, 0.4), inset 0 0 15px rgba(255, 204, 0, 0.4);
   background: radial-gradient(circle, #0a1525 40%, var(--bg) 100%);
 }
-
 .neon-ring::before {
-  content: '';
-  position: absolute;
-  inset: 6px;
-  border-radius: 50%;
-  border: 2px solid var(--pink);
-  border-left-color: var(--cyan);
-  border-bottom-color: var(--cyan);
-  animation: spin 10s linear infinite;
-  box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
+  content: ''; position: absolute; inset: 6px; border-radius: 50%;
+  border: 2px solid var(--pink); border-left-color: var(--cyan); border-bottom-color: var(--cyan);
+  animation: spin 10s linear infinite; box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
 }
-
 .controller-svg {
-  width: 70px;
-  height: 70px;
-  fill: none;
-  stroke: var(--text);
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.8));
-  z-index: 2;
+  width: 70px; height: 70px; fill: none; stroke: var(--text); stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.8)); z-index: 2;
 }
-
-.logo-text {
-  margin-top: 12px;
-  text-align: center;
-  line-height: 1.2;
-}
-.logo-text .line1 {
-  font-size: 26px;
-  font-weight: 900;
-  color: var(--pink);
-  text-shadow: 0 0 8px rgba(255,0,127,0.6), 2px 2px 0 var(--gold);
-}
-.logo-text .line2 {
-  font-size: 32px;
-  font-weight: 900;
-  color: var(--pink);
-  text-shadow: 0 0 8px rgba(255,0,127,0.6), 2px 2px 0 var(--gold);
-}
-
+.logo-text { margin-top: 12px; text-align: center; line-height: 1.2; }
+.logo-text .line1 { font-size: 26px; font-weight: 900; color: var(--pink); text-shadow: 0 0 8px rgba(255,0,127,0.6), 2px 2px 0 var(--gold); }
+.logo-text .line2 { font-size: 32px; font-weight: 900; color: var(--pink); text-shadow: 0 0 8px rgba(255,0,127,0.6), 2px 2px 0 var(--gold); }
 @keyframes spin { 100% { transform: rotate(360deg); } }
 
-/* ═══════════════════════════════════════════
-   بطاقات المعلومات
-   ═══════════════════════════════════════════ */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  position: relative;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: -1px; left: 20px; right: 20px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--cyan), var(--pink), transparent);
-  border-radius: 2px;
-}
-
-.card-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--muted);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.card-title::before {
-  content: '';
-  width: 6px; height: 6px;
-  background: var(--cyan);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--cyan);
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
+/* البطاقات */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+.card::before { content: ''; position: absolute; top: -1px; left: 20px; right: 20px; height: 2px; background: linear-gradient(90deg, transparent, var(--cyan), var(--pink), transparent); border-radius: 2px; }
+.card-title { font-size: 14px; font-weight: 700; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.card-title::before { content: ''; width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 8px var(--cyan); }
+.info-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
 .info-row:last-child { border-bottom: none; padding-bottom: 0; }
 .info-row:first-of-type { padding-top: 0; }
-
 .info-label { font-size: 15px; color: var(--muted); font-weight: 700; }
-.info-value {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text);
-  background: rgba(0, 212, 255, 0.1);
-  padding: 4px 10px;
-  border-radius: 6px;
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  direction: ltr; /* لضمان ظهور الأرقام بشكل صحيح */
-}
+.info-value { font-size: 15px; font-weight: 700; color: var(--text); background: rgba(0, 212, 255, 0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(0, 212, 255, 0.2); direction: ltr; }
 .info-value.fw { color: var(--gold); background: rgba(255, 204, 0, 0.1); border-color: rgba(255, 204, 0, 0.3); }
 
-.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-left: 6px; }
-.dot.on { background: var(--success); box-shadow: 0 0 8px var(--success); }
-.dot.off { background: var(--danger); box-shadow: 0 0 8px var(--danger); }
-
-/* ═══════════════════════════════════════════
-   زر التشغيل
-   ═══════════════════════════════════════════ */
+/* زر التشغيل */
 .btn {
-  width: 100%;
-  padding: 16px;
-  border: none;
-  border-radius: 12px;
-  font-family: 'Tajawal', sans-serif;
-  font-size: 18px;
-  font-weight: 900;
-  color: #000;
-  cursor: pointer;
-  background: linear-gradient(45deg, var(--gold), #ffdd55);
-  box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
+  width: 100%; padding: 16px; border: none; border-radius: 12px; font-family: 'Tajawal', sans-serif;
+  font-size: 18px; font-weight: 900; color: #000; cursor: pointer;
+  background: linear-gradient(45deg, var(--gold), #ffdd55); box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+  transition: all 0.2s ease; position: relative; overflow: hidden;
 }
-.btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255, 204, 0, 0.6); }
-.btn:active:not(:disabled) { transform: translateY(0); }
 .btn:disabled { background: var(--surface); color: var(--muted); border: 1px solid var(--border); box-shadow: none; cursor: not-allowed; }
 
-/* ═══════════════════════════════════════════
-   شبكة الإحصائيات
-   ═══════════════════════════════════════════ */
+/* شبكة الإحصائيات */
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.mini-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px;
-  text-align: center;
-}
+.mini-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; text-align: center; }
 .mini-card .num { font-size: 20px; font-weight: 800; color: var(--pink); text-shadow: 0 0 8px rgba(255,0,127,0.3); direction: ltr; }
 .mini-card .lbl { font-size: 13px; color: var(--muted); font-weight: 700; margin-top: 4px; }
 
-/* ═══════════════════════════════════════════
-   التذييل والحقوق (التصميم الجديد)
-   ═══════════════════════════════════════════ */
-.footer {
-  text-align: center;
-  font-size: 14px;
-  color: var(--text);
-  padding: 20px 0;
-  line-height: 1.9;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+/* التذييل */
+.footer { text-align: center; font-size: 14px; color: var(--text); padding: 20px 0; line-height: 1.9; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
 .footer .dev-box { color: var(--gold); font-weight: 700; font-size: 15px; }
 .footer .contact { font-weight: 700; }
 .footer .contact a { color: var(--cyan); text-decoration: none; direction: ltr; display: inline-block; }
 .footer .location { color: var(--muted); font-size: 13px; }
 .footer .rights { display: block; font-size: 12px; color: #4a5a75; margin-top: 8px; }
 
-/* رسائل التنبيه */
+/* التوست */
 .toast {
-  position: fixed; bottom: 20px; left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background: var(--surface); border: 1px solid var(--pink);
-  color: white; padding: 10px 20px; border-radius: 8px;
-  font-size: 14px; font-weight: bold; opacity: 0; transition: 0.3s; z-index: 99;
-  box-shadow: 0 0 15px rgba(255,0,127,0.4);
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
+  background: var(--surface); border: 1px solid var(--pink); color: white; padding: 10px 20px; border-radius: 8px;
+  font-size: 14px; font-weight: bold; opacity: 0; transition: 0.3s; z-index: 99; box-shadow: 0 0 15px rgba(255,0,127,0.4);
   width: max-content; max-width: 90%; text-align: center;
 }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
@@ -259,7 +108,6 @@ body{
 <body>
 
 <div class="wrap">
-
   <!-- الشعار -->
   <header class="logo-container">
     <div class="neon-ring">
@@ -286,9 +134,7 @@ body{
     </div>
     <div class="info-row">
       <span class="info-label">حالة الكاش</span>
-      <span class="info-value" id="cacheState">
-        <span class="dot off"></span>غير مخزّن
-      </span>
+      <span class="info-value" id="cacheState"><span class="dot off" style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;background:var(--danger);box-shadow:0 0 8px var(--danger);"></span>غير مخزّن</span>
     </div>
     <div class="info-row">
       <span class="info-label">الحمولة</span>
@@ -296,7 +142,7 @@ body{
     </div>
   </section>
 
-  <!-- زر التشغيل -->
+  <!-- زر التشغيل (سيتم تعطيله وتحويله لرسالة تلقائية) -->
   <button class="btn" id="bootBtn" disabled>جارٍ اكتشاف النظام…</button>
 
   <!-- الإحصائيات -->
@@ -311,41 +157,46 @@ body{
     </div>
   </div>
 
-  <!-- الحقوق والبيانات الجديدة -->
+  <!-- التذييل -->
   <footer class="footer">
     <div class="dev-box">تصميم وتطوير : ( بلاي ستور المشتل )</div>
     <div class="contact">تواصل : <a href="tel:07733340622">07733340622</a></div>
     <div class="location">موقعنا : بغداد / المشتل / شارع الكوسترات</div>
     <span class="rights">جميع الحقوق محفوظة &copy; 2026</span>
   </footer>
-
 </div>
 
 <div class="toast" id="toast"></div>
 
+<!-- عنصر مخفي لحل مشكلة المتغير msgs في lapse.js -->
+<div id="msgs" style="display:none;">Running...</div>
+
 <script>
-/* ═══════════════════════════════════════════
-   المنطق البرمجي الأساسي
-   ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   1. قفل زر الرجوع O (History Blocker)
+   ═══════════════════════════════════════════════════════════ */
+history.pushState(null, null, location.href);
+window.addEventListener('popstate', function () {
+    history.pushState(null, null, location.href);
+    showToast('يرجى عدم استخدام زر الرجوع أثناء التثبيت', true);
+});
+
+/* ═══════════════════════════════════════════════════════════
+   2. المنطق الأساسي للتشغيل التلقائي
+   ═══════════════════════════════════════════════════════════ */
 (function(){
   'use strict';
 
   const $ = id => document.getElementById(id);
   const ui = {
-    device: $('deviceName'),
-    fw: $('fwVersion'),
-    cache: $('cacheState'),
-    payload: $('payloadName'),
-    bootBtn: $('bootBtn'),
-    visits: $('visitCount'),
-    host: $('hostStatus'),
-    toast: $('toast')
+    device: $('deviceName'), fw: $('fwVersion'), cache: $('cacheState'),
+    payload: $('payloadName'), bootBtn: $('bootBtn'), visits: $('visitCount'),
+    host: $('hostStatus'), toast: $('toast')
   };
 
   function showToast(msg, isError){
     ui.toast.textContent = msg;
     ui.toast.style.borderColor = isError ? 'var(--danger)' : 'var(--cyan)';
-    ui.toast.style.boxShadow = isError ? '0 0 15px rgba(255,61,113,0.4)' : '0 0 15px rgba(0,212,255,0.4)';
     ui.toast.className = 'toast show';
     clearTimeout(showToast._t);
     showToast._t = setTimeout(() => ui.toast.className = 'toast', 3500);
@@ -353,8 +204,8 @@ body{
 
   function setCacheState(active){
     ui.cache.innerHTML = active
-      ? '<span class="dot on"></span>مخزّن'
-      : '<span class="dot off"></span>غير مخزّن';
+      ? '<span class="dot on" style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;background:var(--success);box-shadow:0 0 8px var(--success);"></span>مخزّن'
+      : '<span class="dot off" style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;background:var(--danger);box-shadow:0 0 8px var(--danger);"></span>غير مخزّن';
   }
 
   function initVisits(){
@@ -362,7 +213,6 @@ body{
     let local = parseInt(localStorage.getItem(KEY) || '0', 10) + 1;
     localStorage.setItem(KEY, local);
     ui.visits.textContent = local;
-
     if (navigator.onLine){
       fetch('https://api.counterapi.dev/v1/ps4a-hud/visits/up')
         .then(r => r.ok ? r.json() : null)
@@ -378,10 +228,7 @@ body{
   }
 
   function detectFirmware(ua){
-    const patterns = [
-      /PlayStation 4\/([\d.]+)/i,
-      /Mozilla\/5\.0 \(PlayStation 4 ([\d.]+)\)/i
-    ];
+    const patterns = [/PlayStation 4\/([\d.]+)/i, /Mozilla\/5\.0 \(PlayStation 4 ([\d.]+)\)/i];
     for (const p of patterns){
       const m = ua.match(p);
       if (m) return m[1];
@@ -392,12 +239,11 @@ body{
   function resolvePayload(fw){
     if (!fw) return null;
     const v = parseFloat(fw);
-
-    if (v >= 5.05 && v <= 5.07) return { path:'505/exploit.js',    cache:'cache505.html' };
-    if (v >= 7.00 && v <= 8.52) return { path:'700/alert.js',      cache:'cache700.html' };
-    if (v >= 9.00 && v <= 9.60) return { path:'900/alert.js',      cache:'cache900.html' };
-    if (v >= 10.00 && v <= 11.02) return { path:'css/main.js',     cache:'cachecss.html' };
-    if (v >= 11.50 && v <= 13.52) return { path:'slopkit/jb.js',   cache:'cacheslopkit.html' };
+    if (v >= 5.05 && v <= 5.07) return { path:'505/exploit.js', cache:'cache505.html' };
+    if (v >= 7.00 && v <= 8.52) return { path:'700/alert.js', cache:'cache700.html' };
+    if (v >= 9.00 && v <= 9.60) return { path:'900/alert.js', cache:'cache900.html' };
+    if (v >= 10.00 && v <= 11.02) return { path:'css/main.js', cache:'cachecss.html' };
+    if (v >= 11.50 && v <= 13.52) return { path:'slopkit/jb.js', cache:'cacheslopkit.html' };
     return null;
   }
 
@@ -415,15 +261,13 @@ body{
   async function initSystemHost(){
     const ua = navigator.userAgent;
     const isPS4 = /PlayStation 4/i.test(ua);
-
     ui.device.textContent = isPS4 ? 'PlayStation 4' : 'متصفح آخر';
     const fw = detectFirmware(ua);
 
     if (!fw){
       ui.fw.textContent = 'غير معروف';
-      ui.bootBtn.disabled = true;
       ui.bootBtn.textContent = 'افتح من متصفح PS4';
-      showToast('لم يتم اكتشاف PS4 — افتح الرابط من الجهاز', true);
+      showToast('لم يتم اكتشاف PS4', true);
       return;
     }
 
@@ -432,9 +276,8 @@ body{
     
     if (!payload){
       ui.payload.textContent = 'غير مدعوم';
-      ui.bootBtn.disabled = true;
       ui.bootBtn.textContent = 'إصدار غير مدعوم';
-      showToast('إصدار النظام ' + fw + ' غير مدعوم حاليًا', true);
+      showToast('إصدار النظام ' + fw + ' غير مدعوم', true);
       return;
     }
 
@@ -442,30 +285,31 @@ body{
     const hasCache = !!(window.applicationCache && window.applicationCache.status !== 0);
     setCacheState(hasCache);
 
-    ui.bootBtn.disabled = false;
-    ui.bootBtn.textContent = hasCache ? 'تشغيل الحمولة الآن' : 'تحضير الكاش (أول مرة)';
-
-    ui.bootBtn.addEventListener('click', async () => {
-      ui.bootBtn.disabled = true;
-      ui.bootBtn.textContent = 'جارٍ التنفيذ…';
-
-      if (!hasCache && 'applicationCache' in window){
-        showToast('جاري تحضير الكاش لأول مرة…');
-        location.href = payload.cache;
-        return;
-      }
-
-      try{
+    // ═══════════════════════════════════════════════════════
+    // 3. التشغيل التلقائي بالكامل (بدون ضغط أي زر)
+    // ═══════════════════════════════════════════════════════
+    if (!hasCache) {
+      // إذا لم يكن هناك كاش، نوجهه تلقائياً لصفحة الكاش
+      ui.bootBtn.textContent = 'جاري تحضير الكاش تلقائياً...';
+      showToast('جاري تحضير الكاش لأول مرة...');
+      setTimeout(() => {
+        window.location.replace(payload.cache);
+      }, 1000);
+    } else {
+      // إذا كان الكاش موجوداً، نحمل الحمولة فوراً
+      ui.bootBtn.textContent = 'جاري تحميل الحمولة تلقائياً...';
+      try {
         await loadPayload(payload.path);
         ui.bootBtn.textContent = 'تم التشغيل بنجاح ✓';
         ui.bootBtn.style.background = 'var(--success)';
         showToast('تم تحميل الحمولة بنجاح');
-      }catch(err){
-        ui.bootBtn.disabled = false;
-        ui.bootBtn.textContent = 'إعادة المحاولة';
-        showToast('فشل التحميل — امسح بيانات المتصفح وأعد المحاولة', true);
+      } catch(err) {
+        ui.bootBtn.textContent = 'فشل التحميل';
+        showToast('فشل التحميل التلقائي، جاري إعادة المحاولة...', true);
+        // إعادة محاولة تلقائية بعد 3 ثوانٍ
+        setTimeout(() => location.reload(), 3000);
       }
-    });
+    }
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -473,7 +317,6 @@ body{
     initHostStatus();
     initSystemHost();
   });
-
 })();
 </script>
 </body>
