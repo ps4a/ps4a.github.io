@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 
-<!-- إصلاح متغير msgs لتجنب خطأ السكربتات -->
+<!-- إصلاح متغير msgs لتجنب أخطاء السكربتات -->
 <script>
     var msgs = { innerHTML: "" };
     window.msgs = msgs;
@@ -212,16 +212,16 @@ body{
     return null;
   }
 
-  // دالة تحديد المسارات بناءً على الإصدار
+  // 🔴 تم ربط جميع الإصدارات بالملفات الرئيسية في الصفحة (بدون مجلد 12)
   function resolvePayload(fw){
     if (!fw) return null;
     const v = parseFloat(fw);
-    if (v >= 5.05 && v <= 5.07) return { path:'505/exploit.js', cache:'505.manifest' };
-    if (v >= 7.00 && v <= 8.52) return { path:'700/alert.js', cache:'700.manifest' };
-    if (v >= 9.00 && v <= 9.60) return { path:'900/alert.js', cache:'900.manifest' };
-    if (v >= 10.00 && v <= 11.02) return { path:'css/main.js', cache:'css.manifest' };
-    // إصدار 12.50 يستخدم مجلد 12
-    if (v >= 11.50 && v <= 13.52) return { path:'12/jb.js', cache:'12/slopkit.manifest' };
+    if (v >= 5.05 && v <= 5.07) return { path:'505/exploit.js', cache:'cache505.html' };
+    if (v >= 7.00 && v <= 8.52) return { path:'700/alert.js', cache:'cache700.html' };
+    if (v >= 9.00 && v <= 9.60) return { path:'900/alert.js', cache:'cache900.html' };
+    if (v >= 10.00 && v <= 11.02) return { path:'css/main.js', cache:'cachecss.html' };
+    // إصدار 12.50 يعتمد على مجلد slopkit الرئيسي
+    if (v >= 11.50 && v <= 13.52) return { path:'slopkit/jb.js', cache:'cacheslopkit.html' };
     return null;
   }
 
@@ -260,22 +260,21 @@ body{
     ui.payload.textContent = payload.path;
     ui.bootBtn.disabled = false;
     
-    // فحص حالة الكاش
+    // فحص الكاش
     const hasCache = !!(window.applicationCache && window.applicationCache.status !== 0);
     ui.cache.textContent = hasCache ? 'مخزّن' : 'غير مخزّن';
 
     if (!hasCache) {
-      // المرحلة الأولى: تثبيت الكاش
+      // تثبيت الكاش أولاً
       ui.bootBtn.textContent = 'تثبيت الكاش (اضغط هنا)';
       ui.bootBtn.onclick = function() {
         ui.bootBtn.disabled = true;
         ui.bootBtn.textContent = 'جارٍ تثبيت الكاش...';
         showToast('جاري التحويل لصفحة الكاش...');
-        // التوجيه إلى صفحة الكاش الخاصة بمجلد 12
-        window.location.href = '12/cacheslopkit.html';
+        setTimeout(() => { window.location.href = payload.cache; }, 500);
       };
     } else {
-      // المرحلة الثانية: تشغيل الهاك
+      // تشغيل الهاك
       ui.bootBtn.textContent = 'تشغيل الحمولة (اضغط هنا)';
       ui.bootBtn.onclick = async function() {
         ui.bootBtn.disabled = true;
