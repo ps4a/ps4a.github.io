@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 
-<!-- 🔴 إصلاح متغير msgs لتجنب أي خطأ -->
+<!-- إصلاح متغير msgs لتجنب خطأ السكربت -->
 <script>
     var msgs = { innerHTML: "" };
     window.msgs = msgs;
@@ -41,8 +41,9 @@ body{
   background-image: 
     radial-gradient(circle at 50% 0%, rgba(255,204,0,0.05) 0%, transparent 50%),
     radial-gradient(circle at 100% 100%, rgba(255,0,127,0.05) 0%, transparent 50%);
+  cursor: pointer; /* يحول المؤشر ليد ليفهم المستخدم أنه يضغط */
 }
-.wrap { width: 100%; max-width: 500px; padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; }
+.wrap { width: 100%; max-width: 500px; padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; pointer-events: none; }
 
 /* الشعار */
 .logo-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; margin-top: 10px; }
@@ -78,15 +79,23 @@ body{
 .info-value { font-size: 15px; font-weight: 700; color: var(--text); background: rgba(0, 212, 255, 0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(0, 212, 255, 0.2); direction: ltr; }
 .info-value.fw { color: var(--gold); background: rgba(255, 204, 0, 0.1); border-color: rgba(255, 204, 0, 0.3); }
 
-/* زر التشغيل */
-.btn {
-  width: 100%; padding: 16px; border: none; border-radius: 12px; font-family: 'Tajawal', sans-serif;
-  font-size: 18px; font-weight: 900; color: #000; cursor: pointer;
-  background: linear-gradient(45deg, var(--gold), #ffdd55); box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
-  transition: all 0.2s ease; position: relative; overflow: hidden;
+/* شريط الحالة (بدل الزر) */
+.status-box {
+  width: 100%; padding: 20px; border-radius: 12px; text-align: center;
+  background: linear-gradient(45deg, #1a2a45, #0a1120);
+  border: 2px solid var(--gold); box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+  font-size: 20px; font-weight: 900; color: #fff; transition: all 0.3s ease;
 }
-.btn:disabled { background: var(--surface); color: var(--muted); border: 1px solid var(--border); box-shadow: none; cursor: not-allowed; }
-.btn.success { background: var(--success); color: #000 !important; text-shadow: none; box-shadow: 0 0 20px var(--success); }
+.status-box.success {
+  background: linear-gradient(45deg, var(--success), #00cc7a);
+  border-color: var(--success); color: #000; box-shadow: 0 0 30px var(--success);
+}
+.status-box.running {
+  background: linear-gradient(45deg, var(--cyan), #0070d1);
+  border-color: var(--cyan); color: #fff; box-shadow: 0 0 30px var(--cyan);
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
 /* شبكة الإحصائيات */
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -94,7 +103,7 @@ body{
 .mini-card .num { font-size: 20px; font-weight: 800; color: var(--pink); text-shadow: 0 0 8px rgba(255,0,127,0.3); direction: ltr; }
 .mini-card .lbl { font-size: 13px; color: var(--muted); font-weight: 700; margin-top: 4px; }
 
-/* التذييل - تم تعديل الرقم هنا */
+/* التذييل */
 .footer { text-align: center; font-size: 14px; color: var(--text); padding: 20px 0; line-height: 1.9; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
 .footer .dev-box { color: var(--gold); font-weight: 700; font-size: 15px; }
 .footer .contact { font-weight: 700; }
@@ -107,7 +116,7 @@ body{
   position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
   background: var(--surface); border: 1px solid var(--pink); color: white; padding: 10px 20px; border-radius: 8px;
   font-size: 14px; font-weight: bold; opacity: 0; transition: 0.3s; z-index: 99; box-shadow: 0 0 15px rgba(255,0,127,0.4);
-  width: max-content; max-width: 90%; text-align: center;
+  width: max-content; max-width: 90%; text-align: center; pointer-events: none;
 }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 </style>
@@ -149,8 +158,8 @@ body{
     </div>
   </section>
 
-  <!-- زر التشغيل -->
-  <button class="btn" id="bootBtn" disabled>جارٍ اكتشاف النظام…</button>
+  <!-- شريط الحالة التفاعلي (بدل الزر) -->
+  <div class="status-box" id="statusBox">جارٍ اكتشاف النظام...</div>
 
   <!-- الإحصائيات -->
   <div class="grid">
@@ -164,7 +173,7 @@ body{
     </div>
   </div>
 
-  <!-- التذييل (تم تغيير الرقم إلى 07749932347) -->
+  <!-- التذييل -->
   <footer class="footer">
     <div class="dev-box">تصميم وتطوير : ( بلاي ستور المشتل )</div>
     <div class="contact">تواصل : <a href="tel:07749932347">07749932347</a></div>
@@ -183,9 +192,12 @@ body{
   const $ = id => document.getElementById(id);
   const ui = {
     device: $('deviceName'), fw: $('fwVersion'), cache: $('cacheState'),
-    payload: $('payloadName'), bootBtn: $('bootBtn'), visits: $('visitCount'),
+    payload: $('payloadName'), status: $('statusBox'), visits: $('visitCount'),
     host: $('hostStatus'), toast: $('toast')
   };
+
+  let currentPayload = null;
+  let isRunning = false;
 
   function showToast(msg, isError){
     ui.toast.textContent = msg;
@@ -245,6 +257,27 @@ body{
     });
   }
 
+  // دالة التشغيل (تُستدعى عند لمس الشاشة)
+  async function triggerExploit() {
+    if (isRunning || !currentPayload) return;
+    isRunning = true;
+
+    ui.status.className = 'status-box running';
+    ui.status.textContent = 'جارٍ التنفيذ… (الرجاء الانتظار)';
+    
+    try {
+      await loadPayload(currentPayload.path);
+      ui.status.className = 'status-box success';
+      ui.status.textContent = 'تم التشغيل بنجاح ✓';
+      showToast('تم تحميل الحمولة بنجاح');
+    } catch(err) {
+      ui.status.className = 'status-box';
+      ui.status.textContent = 'فشل التحميل - المس الشاشة للمحاولة مجدداً';
+      isRunning = false; // السماح بالمحاولة مرة أخرى
+      showToast('فشل التحميل، جرب مرة أخرى', true);
+    }
+  }
+
   async function initSystemHost(){
     const ua = navigator.userAgent;
     const isPS4 = /PlayStation 4/i.test(ua);
@@ -253,52 +286,33 @@ body{
 
     if (!fw){
       ui.fw.textContent = 'غير معروف';
-      ui.bootBtn.textContent = 'افتح من متصفح PS4';
+      ui.status.textContent = 'افتح من متصفح PS4';
       return;
     }
 
     ui.fw.textContent = fw;
-    const payload = resolvePayload(fw);
+    currentPayload = resolvePayload(fw);
     
-    if (!payload){
+    if (!currentPayload){
       ui.payload.textContent = 'غير مدعوم';
-      ui.bootBtn.textContent = 'إصدار غير مدعوم';
+      ui.status.textContent = 'إصدار غير مدعوم';
       return;
     }
 
-    ui.payload.textContent = payload.path.split('/').pop();
+    ui.payload.textContent = currentPayload.path.split('/').pop();
     
     const hasCache = !!(window.applicationCache && window.applicationCache.status !== 0);
     setCacheState(hasCache);
 
-    ui.bootBtn.disabled = false;
-    
     if (!hasCache) {
-      ui.bootBtn.textContent = 'تحضير الكاش (اضغط هنا)';
-      ui.bootBtn.onclick = function() {
-        ui.bootBtn.disabled = true;
-        ui.bootBtn.textContent = 'جاري تحضير الكاش...';
-        showToast('جاري التحويل لصفحة الكاش...');
-        setTimeout(() => { window.location.replace(payload.cache); }, 500);
-      };
+      ui.status.textContent = 'جاري تحضير الكاش...';
+      setTimeout(() => { window.location.replace(currentPayload.cache); }, 1000);
     } else {
-      ui.bootBtn.textContent = 'تشغيل الحمولة الآن (اضغط هنا)';
+      ui.status.textContent = 'المس الشاشة أو اضغط X للبدء';
       
-      ui.bootBtn.onclick = async function() {
-        ui.bootBtn.disabled = true;
-        ui.bootBtn.textContent = 'جارٍ التنفيذ… (الرجاء الانتظار)';
-        
-        try {
-          await loadPayload(payload.path);
-          ui.bootBtn.className = 'btn success'; 
-          ui.bootBtn.textContent = 'تم التشغيل بنجاح ✓';
-          showToast('تم تحميل الحمولة بنجاح');
-        } catch(err) {
-          ui.bootBtn.disabled = false;
-          ui.bootBtn.textContent = 'فشل التحميل - إعادة المحاولة';
-          showToast('فشل التحميل، جرب مرة أخرى', true);
-        }
-      };
+      // تفعيل "اللمس في أي مكان" لبدء الاختراق
+      document.body.addEventListener('click', triggerExploit);
+      document.body.addEventListener('touchstart', triggerExploit);
     }
   }
 
