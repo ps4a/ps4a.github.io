@@ -4,7 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#050810">
-<title>بلاي ستيشن الحنين · PS4A</title>
+<title>بلاي ستور المشتل · PS4A</title>
+<!-- استدعاء خط عربي أنيق (Tajawal) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════
    الألوان مستوحاة من الشعار (نيون + خلفية داكنة)
@@ -25,7 +29,8 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
 body{
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  /* تطبيق الخط الجديد */
+  font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   background-color: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -101,18 +106,16 @@ body{
   line-height: 1.2;
 }
 .logo-text .line1 {
-  font-size: 22px;
-  font-weight: 900;
-  color: var(--pink);
-  text-shadow: 0 0 8px rgba(255,0,127,0.6), 2px 2px 0 var(--gold);
-  letter-spacing: -1px;
-}
-.logo-text .line2 {
   font-size: 26px;
   font-weight: 900;
   color: var(--pink);
   text-shadow: 0 0 8px rgba(255,0,127,0.6), 2px 2px 0 var(--gold);
-  letter-spacing: -1px;
+}
+.logo-text .line2 {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--pink);
+  text-shadow: 0 0 8px rgba(255,0,127,0.6), 2px 2px 0 var(--gold);
 }
 
 @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -139,12 +142,10 @@ body{
 }
 
 .card-title {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--muted);
   margin-bottom: 12px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -167,15 +168,16 @@ body{
 .info-row:last-child { border-bottom: none; padding-bottom: 0; }
 .info-row:first-of-type { padding-top: 0; }
 
-.info-label { font-size: 14px; color: var(--muted); font-weight: 600; }
+.info-label { font-size: 15px; color: var(--muted); font-weight: 700; }
 .info-value {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--text);
   background: rgba(0, 212, 255, 0.1);
   padding: 4px 10px;
   border-radius: 6px;
   border: 1px solid rgba(0, 212, 255, 0.2);
+  direction: ltr; /* لضمان ظهور الأرقام بشكل صحيح */
 }
 .info-value.fw { color: var(--gold); background: rgba(255, 204, 0, 0.1); border-color: rgba(255, 204, 0, 0.3); }
 
@@ -191,7 +193,8 @@ body{
   padding: 16px;
   border: none;
   border-radius: 12px;
-  font-size: 16px;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 18px;
   font-weight: 900;
   color: #000;
   cursor: pointer;
@@ -216,23 +219,29 @@ body{
   padding: 12px;
   text-align: center;
 }
-.mini-card .num { font-size: 18px; font-weight: 800; color: var(--pink); text-shadow: 0 0 8px rgba(255,0,127,0.3); }
-.mini-card .lbl { font-size: 12px; color: var(--muted); font-weight: 600; margin-top: 4px; }
+.mini-card .num { font-size: 20px; font-weight: 800; color: var(--pink); text-shadow: 0 0 8px rgba(255,0,127,0.3); direction: ltr; }
+.mini-card .lbl { font-size: 13px; color: var(--muted); font-weight: 700; margin-top: 4px; }
 
 /* ═══════════════════════════════════════════
-   التذييل والحقوق (بدون تحذيرات)
+   التذييل والحقوق (التصميم الجديد)
    ═══════════════════════════════════════════ */
 .footer {
   text-align: center;
-  font-size: 13px;
-  color: var(--muted);
+  font-size: 14px;
+  color: var(--text);
   padding: 20px 0;
-  line-height: 1.8;
-  border-top: 1px solid rgba(255,255,255,0.05);
+  line-height: 1.9;
+  border-top: 1px solid rgba(255,255,255,0.08);
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
-.footer .dev { color: var(--cyan); font-weight: 700; text-decoration: none; }
-.footer .rights { display: block; font-size: 11px; color: #4a5a75; margin-top: 6px; }
+.footer .dev-box { color: var(--gold); font-weight: 700; font-size: 15px; }
+.footer .contact { font-weight: 700; }
+.footer .contact a { color: var(--cyan); text-decoration: none; direction: ltr; display: inline-block; }
+.footer .location { color: var(--muted); font-size: 13px; }
+.footer .rights { display: block; font-size: 12px; color: #4a5a75; margin-top: 8px; }
 
 /* رسائل التنبيه */
 .toast {
@@ -240,7 +249,7 @@ body{
   transform: translateX(-50%) translateY(100px);
   background: var(--surface); border: 1px solid var(--pink);
   color: white; padding: 10px 20px; border-radius: 8px;
-  font-size: 13px; font-weight: bold; opacity: 0; transition: 0.3s; z-index: 99;
+  font-size: 14px; font-weight: bold; opacity: 0; transition: 0.3s; z-index: 99;
   box-shadow: 0 0 15px rgba(255,0,127,0.4);
   width: max-content; max-width: 90%; text-align: center;
 }
@@ -259,8 +268,8 @@ body{
       </svg>
     </div>
     <div class="logo-text">
-      <div class="line1">بلاي ستيشن</div>
-      <div class="line2">الحنين</div>
+      <div class="line1">بلاي ستور</div>
+      <div class="line2">المشتل</div>
     </div>
   </header>
 
@@ -302,10 +311,12 @@ body{
     </div>
   </div>
 
-  <!-- الحقوق الأصلية (بدون تحذير) -->
+  <!-- الحقوق والبيانات الجديدة -->
   <footer class="footer">
-    تصميم وتطوير <a class="dev" href="https://t.me/BBTBB" target="_blank" rel="noopener">علي أسامة (@BBTBB)</a>
-    <span class="rights">جميع الحقوق محفوظة &copy; 2024</span>
+    <div class="dev-box">تصميم وتطوير : ( بلاي ستور المشتل )</div>
+    <div class="contact">تواصل : <a href="tel:07733340622">07733340622</a></div>
+    <div class="location">موقعنا : بغداد / المشتل / شارع الكوسترات</div>
+    <span class="rights">جميع الحقوق محفوظة &copy; 2026</span>
   </footer>
 
 </div>
