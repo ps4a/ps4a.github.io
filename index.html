@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 
-<!-- 🔴 الخـــط الدفـــاعي الأول: تعريف المتغير قبل تحميل أي شيء 🔴 -->
+<!-- 🔴 تعريف المتغير msgs مبكراً لتجنب خطأ lapse.js -->
 <script>
     var msgs = { innerHTML: "" };
     window.msgs = msgs;
@@ -179,15 +179,12 @@ body{
 
 <script>
 /* ═══════════════════════════════════════════════════════════
-   1. قفل زر O (الدائرة) ومنع الرجوع (History Blocker)
+   تم إزالة كود منع زر O (popstate) نهائياً 
+   لأنه يتعارض مع سكربت PSFree ويسبب خطأ DieError
    ═══════════════════════════════════════════════════════════ */
-history.pushState(null, null, location.href);
-window.addEventListener('popstate', function () {
-    history.pushState(null, null, location.href);
-});
 
 /* ═══════════════════════════════════════════════════════════
-   2. المنطق الأساسي للتشغيل التلقائي 100%
+   المنطق الأساسي للتشغيل التلقائي 100%
    ═══════════════════════════════════════════════════════════ */
 (function(){
   'use strict';
@@ -238,10 +235,9 @@ window.addEventListener('popstate', function () {
   function resolvePayload(fw){
     if (!fw) return null;
     const v = parseFloat(fw);
-    // لاحظ: السكربت الذي أعطاك خطأ هو lapse.js، تأكد من وجوده في المجلد
     if (v >= 5.05 && v <= 5.07) return { path:'505/exploit.js', cache:'cache505.html' };
     if (v >= 7.00 && v <= 8.52) return { path:'700/alert.js', cache:'cache700.html' };
-    if (v >= 9.00 && v <= 9.60) return { path:'900/alert.js', cache:'cache900.html' }; // أو lapse.js
+    if (v >= 9.00 && v <= 9.60) return { path:'900/alert.js', cache:'cache900.html' };
     if (v >= 10.00 && v <= 11.02) return { path:'css/main.js', cache:'cachecss.html' };
     if (v >= 11.50 && v <= 13.52) return { path:'slopkit/jb.js', cache:'cacheslopkit.html' };
     return null;
