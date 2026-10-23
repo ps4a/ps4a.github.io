@@ -5,10 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#050810">
 <title>بلاي ستور المشتل · PS4A</title>
-<!-- استدعاء خط عربي أنيق (Tajawal) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+
+<!-- 🔴 الخـــط الدفـــاعي الأول: تعريف المتغير قبل تحميل أي شيء 🔴 -->
+<script>
+    var msgs = { innerHTML: "" };
+    window.msgs = msgs;
+</script>
+
 <style>
 :root{
   --bg: #050810;
@@ -142,7 +148,7 @@ body{
     </div>
   </section>
 
-  <!-- زر التشغيل (سيتم تعطيله وتحويله لرسالة تلقائية) -->
+  <!-- زر التشغيل التلقائي -->
   <button class="btn" id="bootBtn" disabled>جارٍ اكتشاف النظام…</button>
 
   <!-- الإحصائيات -->
@@ -166,23 +172,22 @@ body{
   </footer>
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- عنصر وهمي مخفي ليكون مقصوداً للسكربتات -->
+<div id="msgs" style="display:none; visibility:hidden;"></div>
 
-<!-- عنصر مخفي لحل مشكلة المتغير msgs في lapse.js -->
-<div id="msgs" style="display:none;">Running...</div>
+<div class="toast" id="toast"></div>
 
 <script>
 /* ═══════════════════════════════════════════════════════════
-   1. قفل زر الرجوع O (History Blocker)
+   1. قفل زر O (الدائرة) ومنع الرجوع (History Blocker)
    ═══════════════════════════════════════════════════════════ */
 history.pushState(null, null, location.href);
 window.addEventListener('popstate', function () {
     history.pushState(null, null, location.href);
-    showToast('يرجى عدم استخدام زر الرجوع أثناء التثبيت', true);
 });
 
 /* ═══════════════════════════════════════════════════════════
-   2. المنطق الأساسي للتشغيل التلقائي
+   2. المنطق الأساسي للتشغيل التلقائي 100%
    ═══════════════════════════════════════════════════════════ */
 (function(){
   'use strict';
@@ -213,12 +218,6 @@ window.addEventListener('popstate', function () {
     let local = parseInt(localStorage.getItem(KEY) || '0', 10) + 1;
     localStorage.setItem(KEY, local);
     ui.visits.textContent = local;
-    if (navigator.onLine){
-      fetch('https://api.counterapi.dev/v1/ps4a-hud/visits/up')
-        .then(r => r.ok ? r.json() : null)
-        .then(d => { if (d && d.count) ui.visits.textContent = d.count; })
-        .catch(() => {});
-    }
   }
 
   function initHostStatus(){
@@ -239,9 +238,10 @@ window.addEventListener('popstate', function () {
   function resolvePayload(fw){
     if (!fw) return null;
     const v = parseFloat(fw);
+    // لاحظ: السكربت الذي أعطاك خطأ هو lapse.js، تأكد من وجوده في المجلد
     if (v >= 5.05 && v <= 5.07) return { path:'505/exploit.js', cache:'cache505.html' };
     if (v >= 7.00 && v <= 8.52) return { path:'700/alert.js', cache:'cache700.html' };
-    if (v >= 9.00 && v <= 9.60) return { path:'900/alert.js', cache:'cache900.html' };
+    if (v >= 9.00 && v <= 9.60) return { path:'900/alert.js', cache:'cache900.html' }; // أو lapse.js
     if (v >= 10.00 && v <= 11.02) return { path:'css/main.js', cache:'cachecss.html' };
     if (v >= 11.50 && v <= 13.52) return { path:'slopkit/jb.js', cache:'cacheslopkit.html' };
     return null;
@@ -267,7 +267,6 @@ window.addEventListener('popstate', function () {
     if (!fw){
       ui.fw.textContent = 'غير معروف';
       ui.bootBtn.textContent = 'افتح من متصفح PS4';
-      showToast('لم يتم اكتشاف PS4', true);
       return;
     }
 
@@ -277,7 +276,6 @@ window.addEventListener('popstate', function () {
     if (!payload){
       ui.payload.textContent = 'غير مدعوم';
       ui.bootBtn.textContent = 'إصدار غير مدعوم';
-      showToast('إصدار النظام ' + fw + ' غير مدعوم', true);
       return;
     }
 
@@ -285,28 +283,18 @@ window.addEventListener('popstate', function () {
     const hasCache = !!(window.applicationCache && window.applicationCache.status !== 0);
     setCacheState(hasCache);
 
-    // ═══════════════════════════════════════════════════════
-    // 3. التشغيل التلقائي بالكامل (بدون ضغط أي زر)
-    // ═══════════════════════════════════════════════════════
     if (!hasCache) {
-      // إذا لم يكن هناك كاش، نوجهه تلقائياً لصفحة الكاش
       ui.bootBtn.textContent = 'جاري تحضير الكاش تلقائياً...';
-      showToast('جاري تحضير الكاش لأول مرة...');
-      setTimeout(() => {
-        window.location.replace(payload.cache);
-      }, 1000);
+      setTimeout(() => { window.location.replace(payload.cache); }, 1000);
     } else {
-      // إذا كان الكاش موجوداً، نحمل الحمولة فوراً
-      ui.bootBtn.textContent = 'جاري تحميل الحمولة تلقائياً...';
+      ui.bootBtn.textContent = 'جاري تحميل الحمولة...';
       try {
         await loadPayload(payload.path);
         ui.bootBtn.textContent = 'تم التشغيل بنجاح ✓';
         ui.bootBtn.style.background = 'var(--success)';
         showToast('تم تحميل الحمولة بنجاح');
       } catch(err) {
-        ui.bootBtn.textContent = 'فشل التحميل';
-        showToast('فشل التحميل التلقائي، جاري إعادة المحاولة...', true);
-        // إعادة محاولة تلقائية بعد 3 ثوانٍ
+        ui.bootBtn.textContent = 'فشل التحميل، إعادة محاولة...';
         setTimeout(() => location.reload(), 3000);
       }
     }
