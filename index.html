@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 
+<!-- إصلاح متغير msgs لتجنب خطأ السكربتات -->
 <script>
     var msgs = { innerHTML: "" };
     window.msgs = msgs;
@@ -100,6 +101,15 @@ body{
 .footer .contact a { color: var(--cyan); text-decoration: none; direction: ltr; display: inline-block; }
 .footer .location { color: var(--muted); font-size: 13px; }
 .footer .rights { display: block; font-size: 12px; color: #4a5a75; margin-top: 8px; }
+
+/* التوست */
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
+  background: var(--surface); border: 1px solid var(--pink); color: white; padding: 10px 20px; border-radius: 8px;
+  font-size: 14px; font-weight: bold; opacity: 0; transition: 0.3s; z-index: 99; box-shadow: 0 0 15px rgba(255,0,127,0.4);
+  width: max-content; max-width: 90%; text-align: center; pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 </style>
 </head>
 <body>
@@ -128,8 +138,8 @@ body{
       <span class="info-value fw" id="fwVersion">جارٍ الفحص…</span>
     </div>
     <div class="info-row">
-      <span class="info-label">حالة النظام</span>
-      <span class="info-value" id="cacheState">جاهز</span>
+      <span class="info-label">حالة الكاش</span>
+      <span class="info-value" id="cacheState">—</span>
     </div>
     <div class="info-row">
       <span class="info-label">الحمولة</span>
@@ -159,6 +169,7 @@ body{
 </div>
 
 <div id="msgs" style="display:none; visibility:hidden;">Running...</div>
+<div class="toast" id="toast"></div>
 
 <script>
 (function(){
@@ -168,8 +179,16 @@ body{
   const ui = {
     device: $('deviceName'), fw: $('fwVersion'), cache: $('cacheState'),
     payload: $('payloadName'), bootBtn: $('bootBtn'), visits: $('visitCount'),
-    host: $('hostStatus')
+    host: $('hostStatus'), toast: $('toast')
   };
+
+  function showToast(msg, isError){
+    ui.toast.textContent = msg;
+    ui.toast.style.borderColor = isError ? 'var(--danger)' : 'var(--cyan)';
+    ui.toast.className = 'toast show';
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => ui.toast.className = 'toast', 3500);
+  }
 
   function initVisits(){
     const KEY = 'aliosama_visits_v50';
@@ -180,6 +199,8 @@ body{
 
   function initHostStatus(){
     ui.host.textContent = navigator.onLine ? 'متصل' : 'أوفلاين';
+    window.addEventListener('online', () => ui.host.textContent = 'متصل');
+    window.addEventListener('offline', () => ui.host.textContent = 'أوفلاين');
   }
 
   function detectFirmware(ua){
@@ -191,16 +212,16 @@ body{
     return null;
   }
 
-  // 🔴 هنا تم ربط إصدار 12.50 بمجلدك الجديد
+  // دالة تحديد المسارات بناءً على الإصدار
   function resolvePayload(fw){
     if (!fw) return null;
     const v = parseFloat(fw);
-    if (v >= 5.05 && v <= 5.07) return { path:'505/exploit.js' };
-    if (v >= 7.00 && v <= 8.52) return { path:'700/alert.js' };
-    if (v >= 9.00 && v <= 9.60) return { path:'900/alert.js' };
-    if (v >= 10.00 && v <= 11.02) return { path:'css/main.js' };
-    // إصدار 12 وما فوق يذهب لمجلد 12
-    if (v >= 11.50 && v <= 13.52) return { path:'12/jb.js' }; 
+    if (v >= 5.05 && v <= 5.07) return { path:'505/exploit.js', cache:'505.manifest' };
+    if (v >= 7.00 && v <= 8.52) return { path:'700/alert.js', cache:'700.manifest' };
+    if (v >= 9.00 && v <= 9.60) return { path:'900/alert.js', cache:'900.manifest' };
+    if (v >= 10.00 && v <= 11.02) return { path:'css/main.js', cache:'css.manifest' };
+    // إصدار 12.50 يستخدم مجلد 12
+    if (v >= 11.50 && v <= 13.52) return { path:'12/jb.js', cache:'12/slopkit.manifest' };
     return null;
   }
 
@@ -239,9 +260,23 @@ body{
     ui.payload.textContent = payload.path;
     ui.bootBtn.disabled = false;
     
-    // في الإصدارات الجديدة (12) لا نحتاج لصفحة كاش، نضغط الزر مباشرة ويشتغل الهاك
-    if (fw >= 11.50) {
-      ui.bootBtn.textContent = 'تشغيل الاختراق الآن (اضغط هنا)';
+    // فحص حالة الكاش
+    const hasCache = !!(window.applicationCache && window.applicationCache.status !== 0);
+    ui.cache.textContent = hasCache ? 'مخزّن' : 'غير مخزّن';
+
+    if (!hasCache) {
+      // المرحلة الأولى: تثبيت الكاش
+      ui.bootBtn.textContent = 'تثبيت الكاش (اضغط هنا)';
+      ui.bootBtn.onclick = function() {
+        ui.bootBtn.disabled = true;
+        ui.bootBtn.textContent = 'جارٍ تثبيت الكاش...';
+        showToast('جاري التحويل لصفحة الكاش...');
+        // التوجيه إلى صفحة الكاش الخاصة بمجلد 12
+        window.location.href = '12/cacheslopkit.html';
+      };
+    } else {
+      // المرحلة الثانية: تشغيل الهاك
+      ui.bootBtn.textContent = 'تشغيل الحمولة (اضغط هنا)';
       ui.bootBtn.onclick = async function() {
         ui.bootBtn.disabled = true;
         ui.bootBtn.textContent = 'جارٍ التنفيذ… (الرجاء الانتظار)';
@@ -250,36 +285,13 @@ body{
           await loadPayload(payload.path);
           ui.bootBtn.className = 'btn success';
           ui.bootBtn.textContent = 'تم التشغيل بنجاح ✓';
+          showToast('تم تحميل الحمولة بنجاح');
         } catch(err) {
           ui.bootBtn.disabled = false;
           ui.bootBtn.textContent = 'فشل التحميل - إعادة المحاولة';
+          showToast('فشل التحميل، حاول مرة أخرى', true);
         }
       };
-    } else {
-      // الأنظمة القديمة (إذا احتجتها لاحقاً)
-      const hasCache = !!(window.applicationCache && window.applicationCache.status !== 0);
-      ui.cache.textContent = hasCache ? 'مخزّن' : 'غير مخزّن';
-      
-      if (!hasCache) {
-        ui.bootBtn.textContent = 'تحضير الكاش (اضغط هنا)';
-        ui.bootBtn.onclick = function() {
-          window.location.replace('cache' + fw.split('.')[0] + '.html');
-        };
-      } else {
-        ui.bootBtn.textContent = 'تشغيل الحمولة الآن (اضغط هنا)';
-        ui.bootBtn.onclick = async function() {
-          ui.bootBtn.disabled = true;
-          ui.bootBtn.textContent = 'جارٍ التنفيذ…';
-          try {
-            await loadPayload(payload.path);
-            ui.bootBtn.className = 'btn success';
-            ui.bootBtn.textContent = 'تم التشغيل بنجاح ✓';
-          } catch(err) {
-            ui.bootBtn.disabled = false;
-            ui.bootBtn.textContent = 'فشل التحميل';
-          }
-        };
-      }
     }
   }
 
