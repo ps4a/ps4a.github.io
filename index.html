@@ -8,13 +8,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
-
-<!-- إصلاح متغير msgs لتجنب خطأ السكربت -->
-<script>
-    var msgs = { innerHTML: "" };
-    window.msgs = msgs;
-</script>
-
 <style>
 :root{
   --bg: #050810;
@@ -41,9 +34,8 @@ body{
   background-image: 
     radial-gradient(circle at 50% 0%, rgba(255,204,0,0.05) 0%, transparent 50%),
     radial-gradient(circle at 100% 100%, rgba(255,0,127,0.05) 0%, transparent 50%);
-  cursor: pointer; /* يحول المؤشر ليد ليفهم المستخدم أنه يضغط */
 }
-.wrap { width: 100%; max-width: 500px; padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; pointer-events: none; }
+.wrap { width: 100%; max-width: 500px; padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; }
 
 /* الشعار */
 .logo-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; margin-top: 10px; }
@@ -79,23 +71,15 @@ body{
 .info-value { font-size: 15px; font-weight: 700; color: var(--text); background: rgba(0, 212, 255, 0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(0, 212, 255, 0.2); direction: ltr; }
 .info-value.fw { color: var(--gold); background: rgba(255, 204, 0, 0.1); border-color: rgba(255, 204, 0, 0.3); }
 
-/* شريط الحالة (بدل الزر) */
-.status-box {
-  width: 100%; padding: 20px; border-radius: 12px; text-align: center;
-  background: linear-gradient(45deg, #1a2a45, #0a1120);
-  border: 2px solid var(--gold); box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
-  font-size: 20px; font-weight: 900; color: #fff; transition: all 0.3s ease;
+/* زر التشغيل */
+.btn {
+  width: 100%; padding: 16px; border: none; border-radius: 12px; font-family: 'Tajawal', sans-serif;
+  font-size: 18px; font-weight: 900; color: #000; cursor: pointer;
+  background: linear-gradient(45deg, var(--gold), #ffdd55); box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+  transition: all 0.2s ease; position: relative; overflow: hidden;
 }
-.status-box.success {
-  background: linear-gradient(45deg, var(--success), #00cc7a);
-  border-color: var(--success); color: #000; box-shadow: 0 0 30px var(--success);
-}
-.status-box.running {
-  background: linear-gradient(45deg, var(--cyan), #0070d1);
-  border-color: var(--cyan); color: #fff; box-shadow: 0 0 30px var(--cyan);
-  animation: pulse 1.5s infinite;
-}
-@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+.btn:disabled { background: var(--surface); color: var(--muted); border: 1px solid var(--border); box-shadow: none; cursor: not-allowed; }
+.btn.success { background: var(--success); color: #000 !important; text-shadow: none; box-shadow: 0 0 20px var(--success); }
 
 /* شبكة الإحصائيات */
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -111,20 +95,13 @@ body{
 .footer .location { color: var(--muted); font-size: 13px; }
 .footer .rights { display: block; font-size: 12px; color: #4a5a75; margin-top: 8px; }
 
-/* التوست */
-.toast {
-  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
-  background: var(--surface); border: 1px solid var(--pink); color: white; padding: 10px 20px; border-radius: 8px;
-  font-size: 14px; font-weight: bold; opacity: 0; transition: 0.3s; z-index: 99; box-shadow: 0 0 15px rgba(255,0,127,0.4);
-  width: max-content; max-width: 90%; text-align: center; pointer-events: none;
-}
-.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+/* رسائل مخفية للسكربت */
+#msgs-hidden { display: none; }
 </style>
 </head>
 <body>
 
 <div class="wrap">
-  <!-- الشعار -->
   <header class="logo-container">
     <div class="neon-ring">
       <svg class="controller-svg" viewBox="0 0 24 24">
@@ -137,7 +114,6 @@ body{
     </div>
   </header>
 
-  <!-- بطاقة النظام -->
   <section class="card">
     <div class="card-title">حالة النظام</div>
     <div class="info-row">
@@ -150,18 +126,17 @@ body{
     </div>
     <div class="info-row">
       <span class="info-label">حالة الكاش</span>
-      <span class="info-value" id="cacheState"><span class="dot off" style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;background:var(--danger);box-shadow:0 0 8px var(--danger);"></span>غير مخزّن</span>
+      <span class="info-value" id="cacheState">—</span>
     </div>
     <div class="info-row">
       <span class="info-label">الحمولة</span>
-      <span class="info-value" id="payloadName">GoldHEN 2.4b</span>
+      <span class="info-value" id="payloadName">—</span>
     </div>
   </section>
 
-  <!-- شريط الحالة التفاعلي (بدل الزر) -->
-  <div class="status-box" id="statusBox">جارٍ اكتشاف النظام...</div>
+  <!-- زر التشغيل الحقيقي -->
+  <button class="btn" id="bootBtn" disabled>جارٍ اكتشاف النظام…</button>
 
-  <!-- الإحصائيات -->
   <div class="grid">
     <div class="mini-card">
       <div class="num" id="visitCount">—</div>
@@ -173,7 +148,6 @@ body{
     </div>
   </div>
 
-  <!-- التذييل -->
   <footer class="footer">
     <div class="dev-box">تصميم وتطوير : ( بلاي ستور المشتل )</div>
     <div class="contact">تواصل : <a href="tel:07749932347">07749932347</a></div>
@@ -182,8 +156,8 @@ body{
   </footer>
 </div>
 
-<div id="msgs" style="display:none; visibility:hidden;"></div>
-<div class="toast" id="toast"></div>
+<!-- عنصر msgs الحقيقي والمخفي في الـ DOM ليتعرف عليه السكربت الأصلي -->
+<div id="msgs" style="display:none; visibility:hidden;">Running...</div>
 
 <script>
 (function(){
@@ -192,25 +166,12 @@ body{
   const $ = id => document.getElementById(id);
   const ui = {
     device: $('deviceName'), fw: $('fwVersion'), cache: $('cacheState'),
-    payload: $('payloadName'), status: $('statusBox'), visits: $('visitCount'),
-    host: $('hostStatus'), toast: $('toast')
+    payload: $('payloadName'), bootBtn: $('bootBtn'), visits: $('visitCount'),
+    host: $('hostStatus')
   };
 
-  let currentPayload = null;
-  let isRunning = false;
-
-  function showToast(msg, isError){
-    ui.toast.textContent = msg;
-    ui.toast.style.borderColor = isError ? 'var(--danger)' : 'var(--cyan)';
-    ui.toast.className = 'toast show';
-    clearTimeout(showToast._t);
-    showToast._t = setTimeout(() => ui.toast.className = 'toast', 3500);
-  }
-
   function setCacheState(active){
-    ui.cache.innerHTML = active
-      ? '<span class="dot on" style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;background:var(--success);box-shadow:0 0 8px var(--success);"></span>مخزّن'
-      : '<span class="dot off" style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;background:var(--danger);box-shadow:0 0 8px var(--danger);"></span>غير مخزّن';
+    ui.cache.innerHTML = active ? 'مخزّن' : 'غير مخزّن';
   }
 
   function initVisits(){
@@ -246,6 +207,7 @@ body{
     return null;
   }
 
+  // الدالة الأصلية التي كانت تعمل سابقاً
   function loadPayload(path){
     return new Promise((resolve, reject) => {
       const s = document.createElement('script');
@@ -257,27 +219,6 @@ body{
     });
   }
 
-  // دالة التشغيل (تُستدعى عند لمس الشاشة)
-  async function triggerExploit() {
-    if (isRunning || !currentPayload) return;
-    isRunning = true;
-
-    ui.status.className = 'status-box running';
-    ui.status.textContent = 'جارٍ التنفيذ… (الرجاء الانتظار)';
-    
-    try {
-      await loadPayload(currentPayload.path);
-      ui.status.className = 'status-box success';
-      ui.status.textContent = 'تم التشغيل بنجاح ✓';
-      showToast('تم تحميل الحمولة بنجاح');
-    } catch(err) {
-      ui.status.className = 'status-box';
-      ui.status.textContent = 'فشل التحميل - المس الشاشة للمحاولة مجدداً';
-      isRunning = false; // السماح بالمحاولة مرة أخرى
-      showToast('فشل التحميل، جرب مرة أخرى', true);
-    }
-  }
-
   async function initSystemHost(){
     const ua = navigator.userAgent;
     const isPS4 = /PlayStation 4/i.test(ua);
@@ -286,33 +227,49 @@ body{
 
     if (!fw){
       ui.fw.textContent = 'غير معروف';
-      ui.status.textContent = 'افتح من متصفح PS4';
+      ui.bootBtn.textContent = 'افتح من متصفح PS4';
       return;
     }
 
     ui.fw.textContent = fw;
-    currentPayload = resolvePayload(fw);
+    const payload = resolvePayload(fw);
     
-    if (!currentPayload){
+    if (!payload){
       ui.payload.textContent = 'غير مدعوم';
-      ui.status.textContent = 'إصدار غير مدعوم';
+      ui.bootBtn.textContent = 'إصدار غير مدعوم';
       return;
     }
 
-    ui.payload.textContent = currentPayload.path.split('/').pop();
-    
+    ui.payload.textContent = payload.path.split('/').pop();
     const hasCache = !!(window.applicationCache && window.applicationCache.status !== 0);
     setCacheState(hasCache);
 
+    ui.bootBtn.disabled = false;
+    
     if (!hasCache) {
-      ui.status.textContent = 'جاري تحضير الكاش...';
-      setTimeout(() => { window.location.replace(currentPayload.cache); }, 1000);
+      ui.bootBtn.textContent = 'تحضير الكاش (اضغط هنا)';
+      ui.bootBtn.onclick = function() {
+        ui.bootBtn.disabled = true;
+        ui.bootBtn.textContent = 'جاري تحضير الكاش...';
+        setTimeout(() => { window.location.replace(payload.cache); }, 500);
+      };
     } else {
-      ui.status.textContent = 'المس الشاشة أو اضغط X للبدء';
+      ui.bootBtn.textContent = 'تشغيل الحمولة الآن (اضغط هنا)';
       
-      // تفعيل "اللمس في أي مكان" لبدء الاختراق
-      document.body.addEventListener('click', triggerExploit);
-      document.body.addEventListener('touchstart', triggerExploit);
+      // إرجاع الحدث الأصلي (onclick) الذي يعتمد عليه المتصفح لتشغيل الثغرة
+      ui.bootBtn.onclick = async function() {
+        ui.bootBtn.disabled = true;
+        ui.bootBtn.textContent = 'جارٍ التنفيذ… (الرجاء الانتظار)';
+        
+        try {
+          await loadPayload(payload.path);
+          ui.bootBtn.className = 'btn success';
+          ui.bootBtn.textContent = 'تم التشغيل بنجاح ✓';
+        } catch(err) {
+          ui.bootBtn.disabled = false;
+          ui.bootBtn.textContent = 'فشل التحميل - إعادة المحاولة';
+        }
+      };
     }
   }
 
