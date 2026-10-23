@@ -8,6 +8,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+
+<script>
+    var msgs = { innerHTML: "" };
+    window.msgs = msgs;
+</script>
+
 <style>
 :root{
   --bg: #050810;
@@ -94,9 +100,6 @@ body{
 .footer .contact a { color: var(--cyan); text-decoration: none; direction: ltr; display: inline-block; }
 .footer .location { color: var(--muted); font-size: 13px; }
 .footer .rights { display: block; font-size: 12px; color: #4a5a75; margin-top: 8px; }
-
-/* رسائل مخفية للسكربت */
-#msgs-hidden { display: none; }
 </style>
 </head>
 <body>
@@ -125,8 +128,8 @@ body{
       <span class="info-value fw" id="fwVersion">جارٍ الفحص…</span>
     </div>
     <div class="info-row">
-      <span class="info-label">حالة الكاش</span>
-      <span class="info-value" id="cacheState">—</span>
+      <span class="info-label">حالة النظام</span>
+      <span class="info-value" id="cacheState">جاهز</span>
     </div>
     <div class="info-row">
       <span class="info-label">الحمولة</span>
@@ -134,7 +137,6 @@ body{
     </div>
   </section>
 
-  <!-- زر التشغيل الحقيقي -->
   <button class="btn" id="bootBtn" disabled>جارٍ اكتشاف النظام…</button>
 
   <div class="grid">
@@ -156,7 +158,6 @@ body{
   </footer>
 </div>
 
-<!-- عنصر msgs الحقيقي والمخفي في الـ DOM ليتعرف عليه السكربت الأصلي -->
 <div id="msgs" style="display:none; visibility:hidden;">Running...</div>
 
 <script>
@@ -170,10 +171,6 @@ body{
     host: $('hostStatus')
   };
 
-  function setCacheState(active){
-    ui.cache.innerHTML = active ? 'مخزّن' : 'غير مخزّن';
-  }
-
   function initVisits(){
     const KEY = 'aliosama_visits_v50';
     let local = parseInt(localStorage.getItem(KEY) || '0', 10) + 1;
@@ -183,8 +180,6 @@ body{
 
   function initHostStatus(){
     ui.host.textContent = navigator.onLine ? 'متصل' : 'أوفلاين';
-    window.addEventListener('online', () => ui.host.textContent = 'متصل');
-    window.addEventListener('offline', () => ui.host.textContent = 'أوفلاين');
   }
 
   function detectFirmware(ua){
@@ -196,18 +191,19 @@ body{
     return null;
   }
 
+  // 🔴 هنا تم ربط إصدار 12.50 بمجلدك الجديد
   function resolvePayload(fw){
     if (!fw) return null;
     const v = parseFloat(fw);
-    if (v >= 5.05 && v <= 5.07) return { path:'505/exploit.js', cache:'cache505.html' };
-    if (v >= 7.00 && v <= 8.52) return { path:'700/alert.js', cache:'cache700.html' };
-    if (v >= 9.00 && v <= 9.60) return { path:'900/alert.js', cache:'cache900.html' };
-    if (v >= 10.00 && v <= 11.02) return { path:'css/main.js', cache:'cachecss.html' };
-    if (v >= 11.50 && v <= 13.52) return { path:'slopkit/jb.js', cache:'cacheslopkit.html' };
+    if (v >= 5.05 && v <= 5.07) return { path:'505/exploit.js' };
+    if (v >= 7.00 && v <= 8.52) return { path:'700/alert.js' };
+    if (v >= 9.00 && v <= 9.60) return { path:'900/alert.js' };
+    if (v >= 10.00 && v <= 11.02) return { path:'css/main.js' };
+    // إصدار 12 وما فوق يذهب لمجلد 12
+    if (v >= 11.50 && v <= 13.52) return { path:'12/jb.js' }; 
     return null;
   }
 
-  // الدالة الأصلية التي كانت تعمل سابقاً
   function loadPayload(path){
     return new Promise((resolve, reject) => {
       const s = document.createElement('script');
@@ -240,23 +236,12 @@ body{
       return;
     }
 
-    ui.payload.textContent = payload.path.split('/').pop();
-    const hasCache = !!(window.applicationCache && window.applicationCache.status !== 0);
-    setCacheState(hasCache);
-
+    ui.payload.textContent = payload.path;
     ui.bootBtn.disabled = false;
     
-    if (!hasCache) {
-      ui.bootBtn.textContent = 'تحضير الكاش (اضغط هنا)';
-      ui.bootBtn.onclick = function() {
-        ui.bootBtn.disabled = true;
-        ui.bootBtn.textContent = 'جاري تحضير الكاش...';
-        setTimeout(() => { window.location.replace(payload.cache); }, 500);
-      };
-    } else {
-      ui.bootBtn.textContent = 'تشغيل الحمولة الآن (اضغط هنا)';
-      
-      // إرجاع الحدث الأصلي (onclick) الذي يعتمد عليه المتصفح لتشغيل الثغرة
+    // في الإصدارات الجديدة (12) لا نحتاج لصفحة كاش، نضغط الزر مباشرة ويشتغل الهاك
+    if (fw >= 11.50) {
+      ui.bootBtn.textContent = 'تشغيل الاختراق الآن (اضغط هنا)';
       ui.bootBtn.onclick = async function() {
         ui.bootBtn.disabled = true;
         ui.bootBtn.textContent = 'جارٍ التنفيذ… (الرجاء الانتظار)';
@@ -270,6 +255,31 @@ body{
           ui.bootBtn.textContent = 'فشل التحميل - إعادة المحاولة';
         }
       };
+    } else {
+      // الأنظمة القديمة (إذا احتجتها لاحقاً)
+      const hasCache = !!(window.applicationCache && window.applicationCache.status !== 0);
+      ui.cache.textContent = hasCache ? 'مخزّن' : 'غير مخزّن';
+      
+      if (!hasCache) {
+        ui.bootBtn.textContent = 'تحضير الكاش (اضغط هنا)';
+        ui.bootBtn.onclick = function() {
+          window.location.replace('cache' + fw.split('.')[0] + '.html');
+        };
+      } else {
+        ui.bootBtn.textContent = 'تشغيل الحمولة الآن (اضغط هنا)';
+        ui.bootBtn.onclick = async function() {
+          ui.bootBtn.disabled = true;
+          ui.bootBtn.textContent = 'جارٍ التنفيذ…';
+          try {
+            await loadPayload(payload.path);
+            ui.bootBtn.className = 'btn success';
+            ui.bootBtn.textContent = 'تم التشغيل بنجاح ✓';
+          } catch(err) {
+            ui.bootBtn.disabled = false;
+            ui.bootBtn.textContent = 'فشل التحميل';
+          }
+        };
+      }
     }
   }
 
