@@ -9,7 +9,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 
-<!-- إصلاح متغير msgs لتجنب أخطاء السكربتات -->
 <script>
     var msgs = { innerHTML: "" };
     window.msgs = msgs;
@@ -44,7 +43,6 @@ body{
 }
 .wrap { width: 100%; max-width: 500px; padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; }
 
-/* الشعار */
 .logo-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; margin-top: 10px; }
 .neon-ring {
   width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--gold);
@@ -66,7 +64,6 @@ body{
 .logo-text .line2 { font-size: 32px; font-weight: 900; color: var(--pink); text-shadow: 0 0 8px rgba(255,0,127,0.6), 2px 2px 0 var(--gold); }
 @keyframes spin { 100% { transform: rotate(360deg); } }
 
-/* البطاقات */
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
 .card::before { content: ''; position: absolute; top: -1px; left: 20px; right: 20px; height: 2px; background: linear-gradient(90deg, transparent, var(--cyan), var(--pink), transparent); border-radius: 2px; }
 .card-title { font-size: 14px; font-weight: 700; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
@@ -78,7 +75,6 @@ body{
 .info-value { font-size: 15px; font-weight: 700; color: var(--text); background: rgba(0, 212, 255, 0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(0, 212, 255, 0.2); direction: ltr; }
 .info-value.fw { color: var(--gold); background: rgba(255, 204, 0, 0.1); border-color: rgba(255, 204, 0, 0.3); }
 
-/* زر التشغيل */
 .btn {
   width: 100%; padding: 16px; border: none; border-radius: 12px; font-family: 'Tajawal', sans-serif;
   font-size: 18px; font-weight: 900; color: #000; cursor: pointer;
@@ -88,13 +84,11 @@ body{
 .btn:disabled { background: var(--surface); color: var(--muted); border: 1px solid var(--border); box-shadow: none; cursor: not-allowed; }
 .btn.success { background: var(--success); color: #000 !important; text-shadow: none; box-shadow: 0 0 20px var(--success); }
 
-/* شبكة الإحصائيات */
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .mini-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; text-align: center; }
 .mini-card .num { font-size: 20px; font-weight: 800; color: var(--pink); text-shadow: 0 0 8px rgba(255,0,127,0.3); direction: ltr; }
 .mini-card .lbl { font-size: 13px; color: var(--muted); font-weight: 700; margin-top: 4px; }
 
-/* التذييل */
 .footer { text-align: center; font-size: 14px; color: var(--text); padding: 20px 0; line-height: 1.9; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
 .footer .dev-box { color: var(--gold); font-weight: 700; font-size: 15px; }
 .footer .contact { font-weight: 700; }
@@ -102,7 +96,6 @@ body{
 .footer .location { color: var(--muted); font-size: 13px; }
 .footer .rights { display: block; font-size: 12px; color: #4a5a75; margin-top: 8px; }
 
-/* التوست */
 .toast {
   position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
   background: var(--surface); border: 1px solid var(--pink); color: white; padding: 10px 20px; border-radius: 8px;
@@ -199,8 +192,6 @@ body{
 
   function initHostStatus(){
     ui.host.textContent = navigator.onLine ? 'متصل' : 'أوفلاين';
-    window.addEventListener('online', () => ui.host.textContent = 'متصل');
-    window.addEventListener('offline', () => ui.host.textContent = 'أوفلاين');
   }
 
   function detectFirmware(ua){
@@ -212,7 +203,6 @@ body{
     return null;
   }
 
-  // 🔴 تم ربط جميع الإصدارات بالملفات الرئيسية في الصفحة (بدون مجلد 12)
   function resolvePayload(fw){
     if (!fw) return null;
     const v = parseFloat(fw);
@@ -220,7 +210,6 @@ body{
     if (v >= 7.00 && v <= 8.52) return { path:'700/alert.js', cache:'cache700.html' };
     if (v >= 9.00 && v <= 9.60) return { path:'900/alert.js', cache:'cache900.html' };
     if (v >= 10.00 && v <= 11.02) return { path:'css/main.js', cache:'cachecss.html' };
-    // إصدار 12.50 يعتمد على مجلد slopkit الرئيسي
     if (v >= 11.50 && v <= 13.52) return { path:'slopkit/jb.js', cache:'cacheslopkit.html' };
     return null;
   }
@@ -234,6 +223,27 @@ body{
       s.onerror = () => reject(new Error('فشل تحميل: ' + path));
       document.body.appendChild(s);
     });
+  }
+
+  // 🔴 دالة التحقق الفعلي من عمل GoldHEN عبر فحص المنفذ 9090
+  async function verifyGoldHEN() {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2000); // مهلة ثانيتين
+      
+      // محاولة الاتصال بالمنفذ المحلي 9090
+      await fetch('http://127.0.0.1:9090', {
+        method: 'HEAD',
+        mode: 'no-cors',
+        signal: controller.signal,
+        cache: 'no-store'
+      });
+      
+      clearTimeout(timeoutId);
+      return true; // إذا لم يرفض الاتصال، فهذا يعني أن المنفذ مفتوح والحمولة تعمل
+    } catch (error) {
+      return false; // فشل الاتصال، الحمولة لم تعمل
+    }
   }
 
   async function initSystemHost(){
@@ -260,35 +270,46 @@ body{
     ui.payload.textContent = payload.path;
     ui.bootBtn.disabled = false;
     
-    // فحص الكاش
     const hasCache = !!(window.applicationCache && window.applicationCache.status !== 0);
     ui.cache.textContent = hasCache ? 'مخزّن' : 'غير مخزّن';
 
     if (!hasCache) {
-      // تثبيت الكاش أولاً
       ui.bootBtn.textContent = 'تثبيت الكاش (اضغط هنا)';
       ui.bootBtn.onclick = function() {
         ui.bootBtn.disabled = true;
         ui.bootBtn.textContent = 'جارٍ تثبيت الكاش...';
-        showToast('جاري التحويل لصفحة الكاش...');
         setTimeout(() => { window.location.href = payload.cache; }, 500);
       };
     } else {
-      // تشغيل الهاك
       ui.bootBtn.textContent = 'تشغيل الحمولة (اضغط هنا)';
       ui.bootBtn.onclick = async function() {
         ui.bootBtn.disabled = true;
         ui.bootBtn.textContent = 'جارٍ التنفيذ… (الرجاء الانتظار)';
         
         try {
+          // 1. تحميل السكربت
           await loadPayload(payload.path);
-          ui.bootBtn.className = 'btn success';
-          ui.bootBtn.textContent = 'تم التشغيل بنجاح ✓';
-          showToast('تم تحميل الحمولة بنجاح');
+          
+          // 2. الانتظار قليلاً ليقوم السكربت بحقن الحمولة
+          ui.bootBtn.textContent = 'جارٍ التحقق من التفعيل...';
+          await new Promise(r => setTimeout(r, 4000)); // انتظار 4 ثوانٍ
+          
+          // 3. التحقق الفعلي
+          const isWorking = await verifyGoldHEN();
+          
+          if (isWorking) {
+            ui.bootBtn.className = 'btn success';
+            ui.bootBtn.textContent = 'تم التشغيل بنجاح ✓';
+            showToast('GoldHEN يعمل الآن بنجاح!');
+          } else {
+            // إذا لم يعمل، لا نعرض رسالة النجاح
+            throw new Error('لم يتم تفعيل GoldHEN');
+          }
         } catch(err) {
           ui.bootBtn.disabled = false;
-          ui.bootBtn.textContent = 'فشل التحميل - إعادة المحاولة';
-          showToast('فشل التحميل، حاول مرة أخرى', true);
+          ui.bootBtn.textContent = 'فشل التفعيل - إعادة المحاولة';
+          ui.bootBtn.className = 'btn'; // إزالة كلاس النجاح
+          showToast('فشل تفعيل GoldHEN، أعد تشغيل الجهاز وحاول مجدداً', true);
         }
       };
     }
