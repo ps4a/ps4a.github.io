@@ -71,13 +71,13 @@ body{
 .info-value { font-size: 15px; font-weight: 700; color: var(--text); background: rgba(0, 212, 255, 0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(0, 212, 255, 0.2); direction: ltr; }
 .info-value.fw { color: var(--gold); background: rgba(255, 204, 0, 0.1); border-color: rgba(255, 204, 0, 0.3); }
 
-/* الزر الكبير (يعمل كشاشة عرض حالة) */
+/* الزر الكبير */
 .btn {
   width: 100%; padding: 18px 16px; border: none; border-radius: 12px; font-family: 'Tajawal', sans-serif;
   font-size: 18px; font-weight: 900; color: #000;
   background: linear-gradient(45deg, var(--gold), #ffdd55); box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
   text-align: center; transition: all 0.3s ease; position: relative; overflow: hidden;
-  display: block; pointer-events: none; /* لمنع الضغط عليه */
+  display: block; pointer-events: none;
 }
 .btn.success { background: linear-gradient(45deg, var(--success), #00cc7a); color: #000; box-shadow: 0 0 30px var(--success); }
 .btn.error { background: linear-gradient(45deg, var(--danger), #cc0033); color: #fff; box-shadow: 0 0 30px var(--danger); }
@@ -102,7 +102,6 @@ body{
 <body>
 
 <div class="wrap">
-  <!-- الشعار -->
   <header class="logo-container">
     <div class="neon-ring">
       <svg class="controller-svg" viewBox="0 0 24 24">
@@ -115,7 +114,6 @@ body{
     </div>
   </header>
 
-  <!-- بطاقة النظام -->
   <section class="card">
     <div class="card-title">حالة النظام</div>
     <div class="info-row">
@@ -128,10 +126,8 @@ body{
     </div>
   </section>
 
-  <!-- الزر الكبير (يعرض الحالة تلقائياً) -->
   <div class="btn loading" id="bootBtn">جارٍ اكتشاف النظام...</div>
 
-  <!-- شبكة الإحصائيات -->
   <div class="grid">
     <div class="mini-card">
       <div class="num" id="visitCount">—</div>
@@ -143,7 +139,6 @@ body{
     </div>
   </div>
 
-  <!-- التذييل -->
   <footer class="footer">
     <div class="dev-box">تصميم وتطوير : ( بلاي ستور المشتل )</div>
     <div class="contact">تواصل : <a href="tel:07749932347">07749932347</a></div>
@@ -152,72 +147,69 @@ body{
   </footer>
 </div>
 
-<!-- عنصر مخفي ليتوافق مع السكربت الأصلي -->
-<div id="msgs" style="display:none;"></div>
+<div id="msgs" style="display:none;">Running...</div>
 
 <script>
-// ==========================================
-// 🔴 منطق p.github.io الأصلي 100%
-// ==========================================
 var uaFull = navigator.userAgent;
 var match = uaFull.match(/PlayStation 4[ /]([\d.]+)/i);
 var isPS4 = match !== null;
 var fwVersion = isPS4 ? match[1] : "Unknown";
 var fwNum = parseFloat(fwVersion);
 
-// ربط عناصر التصميم
 var bootBtn = document.getElementById('bootBtn');
 var deviceEl = document.getElementById('deviceName');
 var fwEl = document.getElementById('fwVersion');
 var hostEl = document.getElementById('hostStatus');
 
-// تحديث واجهة المستخدم
 deviceEl.textContent = isPS4 ? 'PlayStation 4' : 'متصفح آخر';
 fwEl.textContent = isPS4 ? fwVersion : 'غير معروف';
 hostEl.textContent = navigator.onLine ? 'متصل' : 'أوفلاين';
 
-// عداد الزيارات
 var visitKey = 'aliosama_visits_v50';
 var localVisits = parseInt(localStorage.getItem(visitKey) || '0', 10) + 1;
 localStorage.setItem(visitKey, localVisits);
 document.getElementById('visitCount').textContent = localVisits;
+
+// 🔴 دالة الانتظار الذكي: تعطي الجهاز وقتاً للحقن ثم تطلب منك مراقبة الإشعار
+function waitForGoldHEN() {
+    bootBtn.className = 'btn loading';
+    bootBtn.innerHTML = "جارٍ حقن الذاكرة...";
+    
+    // ننتظر 5 ثوانٍ (وقت كافٍ جداً لظهور إشعار GoldHEN)
+    setTimeout(function() {
+        bootBtn.className = 'btn success';
+        bootBtn.innerHTML = "تم تشغيل الحمولة!<br><span style='font-size:14px; font-weight:normal;'>راقب إشعار GoldHEN في أعلى يسار الشاشة</span>";
+    }, 5000); 
+}
 
 function onScriptError() {
     bootBtn.className = 'btn error';
     bootBtn.innerHTML = "المحتوى غير موجود! امسح بيانات المتصفح وأعد المحاولة...";
 }
 
-// المنطق الأساسي
 if (!isPS4) {
     bootBtn.className = 'btn error';
     bootBtn.innerHTML = "هذا الموقع مخصص لأجهزة PS4 فقط";
 } else {
     if (window.applicationCache.status == '0') {
-        // التوجيه التلقائي لصفحة الكاش
         bootBtn.innerHTML = "جاري تحضير الكاش...";
-        if (fwNum == 5.05 || fwNum == 5.07) {
-            window.location.replace("cache505.html");
-        } else if (fwNum >= 7.00 && fwNum <= 8.52) {
-            window.location.replace("cache700.html");
-        } else if (fwNum >= 9.00 && fwNum <= 9.60) {
-            window.location.replace("cache900.html");
-        } else if (fwNum >= 10.00 && fwNum <= 11.02) {
-            window.location.replace("cachecss.html");
-        } else if (fwNum >= 11.50 && fwNum <= 13.52) {
-            window.location.replace("cacheslopkit.html");
-        } else {
+        if (fwNum == 5.05 || fwNum == 5.07) window.location.replace("cache505.html");
+        else if (fwNum >= 7.00 && fwNum <= 8.52) window.location.replace("cache700.html");
+        else if (fwNum >= 9.00 && fwNum <= 9.60) window.location.replace("cache900.html");
+        else if (fwNum >= 10.00 && fwNum <= 11.02) window.location.replace("cachecss.html");
+        else if (fwNum >= 11.50 && fwNum <= 13.52) window.location.replace("cacheslopkit.html");
+        else {
             bootBtn.className = 'btn error';
             bootBtn.innerHTML = 'إصدار غير مدعوم: ' + fwVersion;
         }
     } else {
-        // الكاش جاهز، تحميل السكربت المناسب تلقائياً
-        bootBtn.innerHTML = "جارٍ تحميل GoldHEN... الرجاء الانتظار";
+        bootBtn.innerHTML = "جارٍ تحميل سكربت الاختراق...";
         
         if (fwNum == 5.05 || fwNum == 5.07) {
             var script = document.createElement('script');
             script.src = "505/exploit.js";
             script.onerror = onScriptError;
-            script.onload = function() { bootBtn.className = 'btn success'; bootBtn.innerHTML = "تم التشغيل بنجاح ✓"; };
+            script.onload = waitForGoldHEN;
             document.head.appendChild(script);
         }
         else if (fwNum >= 7.00 && fwNum <= 8.52) {
@@ -225,7 +217,7 @@ if (!isPS4) {
             script.type = 'module';
             script.src = "700/alert.js";
             script.onerror = onScriptError;
-            script.onload = function() { bootBtn.className = 'btn success'; bootBtn.innerHTML = "تم التشغيل بنجاح ✓"; };
+            script.onload = waitForGoldHEN;
             document.head.appendChild(script);
         }
         else if (fwNum >= 9.00 && fwNum <= 9.60) {
@@ -233,7 +225,7 @@ if (!isPS4) {
             script.type = 'module';
             script.src = "900/alert.js";
             script.onerror = onScriptError;
-            script.onload = function() { bootBtn.className = 'btn success'; bootBtn.innerHTML = "تم التشغيل بنجاح ✓"; };
+            script.onload = waitForGoldHEN;
             document.head.appendChild(script);
         }
         else if (fwNum >= 10.00 && fwNum <= 11.02) {
@@ -243,8 +235,7 @@ if (!isPS4) {
             script.onload = function() {
                 setTimeout(function() { 
                     if(typeof doJb === "function") doJb(); 
-                    bootBtn.className = 'btn success'; 
-                    bootBtn.innerHTML = "تم التشغيل بنجاح ✓";
+                    waitForGoldHEN();
                 }, 500);
             };
             document.head.appendChild(script);
@@ -254,7 +245,7 @@ if (!isPS4) {
             script.type = 'module';
             script.src = "slopkit/chain_lapse.js";
             script.onerror = onScriptError;
-            script.onload = function() { bootBtn.className = 'btn success'; bootBtn.innerHTML = "تم التشغيل بنجاح ✓"; };
+            script.onload = waitForGoldHEN;
             document.head.appendChild(script);
         }
         else if (fwNum >= 12.50 && fwNum <= 13.00) {
@@ -262,7 +253,7 @@ if (!isPS4) {
             script.type = 'module';
             script.src = "slopkit/chain_poops.js";
             script.onerror = onScriptError;
-            script.onload = function() { bootBtn.className = 'btn success'; bootBtn.innerHTML = "تم التشغيل بنجاح ✓"; };
+            script.onload = waitForGoldHEN;
             document.head.appendChild(script);
         }
         else if (fwNum >= 13.02 && fwNum <= 13.52) {
@@ -270,7 +261,7 @@ if (!isPS4) {
             script.type = 'module';
             script.src = "slopkit/jb.js?v=10";
             script.onerror = onScriptError;
-            script.onload = function() { bootBtn.className = 'btn success'; bootBtn.innerHTML = "تم التشغيل بنجاح ✓"; };
+            script.onload = waitForGoldHEN;
             document.head.appendChild(script);
         }
     }
